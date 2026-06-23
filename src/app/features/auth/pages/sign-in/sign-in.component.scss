@@ -1,0 +1,73 @@
+@use '../auth-shared';
+
+.auth-page__brand-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 2rem;
+
+  i {
+    font-size: 1.5rem;
+  }
+
+  strong {
+    display: block;
+    font-size: 1rem;
+  }
+
+  span {
+    font-size: 0.75rem;
+    color: #94a3b8;
+  }
+}
+
+.auth-form__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.auth-form__remember {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0 1.5rem;
+
+  label {
+    font-size: 0.875rem;
+    color: var(--edu-text-muted);
+    cursor: pointer;
+  }
+}
+
+.auth-form__sso {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+:host ::ng-deep .auth-form__sso-btn {
+  width: 100%;
+}
+
+.auth-form__footer-text {
+  text-align: center;
+  margin: 1.5rem 0 0;
+  font-size: 0.875rem;
+  color: var(--edu-text-muted);
+}
+
+.auth-page__legal {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--edu-text-muted);
+
+  a:hover {
+    color: var(--edu-blue);
+  }
+}

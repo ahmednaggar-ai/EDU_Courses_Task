@@ -1,0 +1,31 @@
+<aside class="sidebar">
+  <div class="sidebar__brand">
+    <div class="sidebar__logo">
+      <i class="pi pi-graduation-cap"></i>
+    </div>
+    <div>
+      <div class="sidebar__title">EduFlow Admin</div>
+      <div class="sidebar__subtitle">INSTITUTIONAL PORTAL</div>
+    </div>
+  </div>
+
+  <nav class="sidebar__nav">
+    @for (item of navItems; track item.route) {
+      <a
+        class="sidebar__link"
+        [routerLink]="item.route"
+        routerLinkActive="sidebar__link--active"
+        [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
+      >
+        <i [class]="item.icon"></i>
+        <span>{{ item.label }}</span>
+      </a>
+    }
+  </nav>
+
+  <div class="sidebar__storage">
+    <div class="sidebar__storage-label">STORAGE USED</div>
+    <p-progressBar [value]="storageUsed" [showValue]="false" />
+    <div class="sidebar__storage-text">7.2 GB of 10 GB</div>
+  </div>
+</aside>

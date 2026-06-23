@@ -1,0 +1,95 @@
+<div class="auth-page">
+  <section class="auth-page__brand">
+    <div class="auth-page__brand-content">
+      <span class="auth-page__badge">Institutional Portal</span>
+      <h1>Empowering Educational Excellence</h1>
+      <p>
+        Access the EduFlow Admin Dashboard to manage student progress, faculty
+        schedules, and institutional metrics with precision.
+      </p>
+      <div class="auth-page__preview">
+        <img
+          src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80"
+          alt="Campus library"
+        />
+      </div>
+    </div>
+    <div class="auth-page__brand-footer">
+      <i class="pi pi-graduation-cap"></i>
+      <div>
+        <strong>EduFlow</strong>
+        <span>Admin Enterprise v2.4</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="auth-page__form-panel">
+    <div class="auth-page__form">
+      <div class="auth-page__form-header">
+        <h2>Welcome Back</h2>
+        <p>Please enter your institutional credentials to continue.</p>
+      </div>
+
+      <form class="auth-form" (ngSubmit)="$event.preventDefault()">
+        <label class="auth-form__label">INSTITUTIONAL EMAIL</label>
+        <p-iconfield>
+          <p-inputicon class="pi pi-at" />
+          <input
+            pInputText
+            type="email"
+            placeholder="name@institution.edu"
+            [(ngModel)]="email"
+            name="email"
+            class="auth-form__input"
+          />
+        </p-iconfield>
+
+        <div class="auth-form__row">
+          <label class="auth-form__label">PASSWORD</label>
+          <a routerLink="/auth/sign-in" class="auth-form__link">Forgot Password?</a>
+        </div>
+        <p-password
+          [(ngModel)]="password"
+          name="password"
+          [toggleMask]="true"
+          [feedback]="false"
+          placeholder="••••••••"
+          styleClass="auth-form__password"
+          inputStyleClass="auth-form__input"
+        />
+
+        <div class="auth-form__remember">
+          <p-checkbox [(ngModel)]="rememberMe" name="rememberMe" [binary]="true" inputId="remember" />
+          <label for="remember">Remember this device for 30 days</label>
+        </div>
+
+        <p-button
+          label="Sign In to Dashboard"
+          icon="pi pi-arrow-right"
+          iconPos="right"
+          type="submit"
+          styleClass="auth-form__submit"
+          routerLink="/courses"
+        />
+
+        <div class="auth-form__divider"><span>OR</span></div>
+
+        <div class="auth-form__sso">
+          <p-button label="SSO Portal" icon="pi pi-building" severity="secondary" [outlined]="true" styleClass="auth-form__sso-btn" />
+          <p-button label="Azure AD" icon="pi pi-microsoft" severity="secondary" [outlined]="true" styleClass="auth-form__sso-btn" />
+        </div>
+
+        <p class="auth-form__footer-text">
+          New to the platform?
+          <a routerLink="/auth/sign-up" class="auth-form__link">Request Access</a>
+        </p>
+      </form>
+
+      <div class="auth-page__legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Support Desk</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </section>
+</div>

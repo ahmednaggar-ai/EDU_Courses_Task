@@ -1,0 +1,36 @@
+<header class="header">
+  <div class="header__search">
+    <p-iconfield>
+      <p-inputicon class="pi pi-search" />
+      <input
+        pInputText
+        type="text"
+        placeholder="Search courses, students, or data..."
+        [(ngModel)]="searchQuery"
+      />
+    </p-iconfield>
+  </div>
+
+  <div class="header__actions">
+    <button type="button" class="header__icon-btn" aria-label="Notifications">
+      <i class="pi pi-bell"></i>
+    </button>
+
+    <div class="header__divider"></div>
+
+    <div class="header__profile">
+      <div class="header__profile-info">
+        <div class="header__profile-name">Alex Rivera</div>
+        <div class="header__profile-role">System Admin</div>
+      </div>
+      <div class="header__avatar">
+        <img
+          src="https://i.pravatar.cc/80?img=12"
+          alt="Alex Rivera"
+          width="40"
+          height="40"
+        />
+      </div>
+    </div>
+  </div>
+</header>

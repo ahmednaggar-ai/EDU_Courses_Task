@@ -1,0 +1,95 @@
+@use '../auth-shared';
+
+.auth-page__logo-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  font-size: 1.125rem;
+
+  i {
+    font-size: 1.5rem;
+    color: var(--edu-blue);
+  }
+}
+
+.auth-page__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  strong {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  span {
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    color: #94a3b8;
+  }
+}
+
+.auth-page__copyright {
+  margin-top: auto;
+  padding-top: 2rem;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.auth-form__label--spaced {
+  margin-top: 1rem;
+}
+
+.auth-form__hint {
+  margin: 0.375rem 0 0;
+  font-size: 0.75rem;
+  color: var(--edu-text-muted);
+}
+
+.auth-form__terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 1.25rem 0 1.5rem;
+
+  label {
+    font-size: 0.875rem;
+    color: var(--edu-text-muted);
+    line-height: 1.4;
+  }
+}
+
+.auth-form__footer-text {
+  text-align: center;
+  margin: 1.5rem 0 0;
+  font-size: 0.875rem;
+  color: var(--edu-text-muted);
+}
+
+.auth-page__sso-ready {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  color: var(--edu-text-muted);
+
+  i {
+    font-size: 0.875rem;
+    color: #22c55e;
+  }
+}
+
+:host ::ng-deep .auth-form__select {
+  width: 100%;
+}
