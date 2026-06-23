@@ -1,0 +1,19 @@
+.theme-toggle {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--edu-border);
+  background: var(--edu-panel-bg);
+  border-radius: 50%;
+  color: var(--edu-text-muted);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 1.125rem;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+
+  &:hover {
+    background: var(--edu-hover-bg);
+    color: var(--edu-blue);
+    border-color: var(--edu-blue);
+  }
+}

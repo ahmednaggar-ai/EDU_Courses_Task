@@ -29,9 +29,12 @@
 
   <section class="auth-page__form-panel">
     <div class="auth-page__form">
-      <div class="auth-page__form-header">
-        <h2>Create Admin Account</h2>
-        <p>Start your journey toward administrative efficiency.</p>
+      <div class="auth-page__form-top">
+        <div class="auth-page__form-header">
+          <h2>Create Admin Account</h2>
+          <p>Start your journey toward administrative efficiency.</p>
+        </div>
+        <app-theme-toggle />
       </div>
 
       <form class="auth-form" (ngSubmit)="$event.preventDefault()">
@@ -88,7 +91,7 @@
           <p-checkbox [(ngModel)]="agreedToTerms" name="terms" [binary]="true" inputId="terms" />
           <label for="terms">
             I agree to the <a href="#" class="auth-form__link">Terms of Service</a> and
-            <a href="#" class="auth-form__link">Privacy Policy</a>.
+            <a routerLink="/auth/privacy-policy" class="auth-form__link">Privacy Policy</a>.
           </label>
         </div>
 

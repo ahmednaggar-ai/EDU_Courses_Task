@@ -1,7 +1,7 @@
 .sidebar {
   width: var(--edu-sidebar-width);
   min-height: 100dvh;
-  background: #111827;
+  background: var(--edu-sidebar-bg);
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -34,7 +34,7 @@
   &__subtitle {
     font-size: 0.625rem;
     letter-spacing: 0.08em;
-    color: #94a3b8;
+    color: var(--edu-sidebar-muted);
     margin-top: 0.125rem;
   }
 
@@ -51,7 +51,7 @@
     gap: 0.75rem;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
-    color: #cbd5e1;
+    color: var(--edu-sidebar-text);
     font-size: 0.9375rem;
     font-weight: 500;
     transition: background 0.2s, color 0.2s;
@@ -83,13 +83,13 @@
   &__storage-label {
     font-size: 0.625rem;
     letter-spacing: 0.08em;
-    color: #94a3b8;
+    color: var(--edu-sidebar-muted);
     margin-bottom: 0.75rem;
   }
 
   &__storage-text {
     font-size: 0.75rem;
-    color: #94a3b8;
+    color: var(--edu-sidebar-muted);
     margin-top: 0.5rem;
   }
 }

@@ -61,7 +61,7 @@
     align-items: center;
     justify-content: center;
     padding: 2rem;
-    background: #fff;
+    background: var(--edu-panel-bg);
   }
 
   &__form {
@@ -69,8 +69,16 @@
     max-width: 26rem;
   }
 
-  &__form-header {
+  &__form-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
     margin-bottom: 2rem;
+  }
+
+  &__form-header {
+    margin-bottom: 0;
 
     h2 {
       margin: 0 0 0.5rem;

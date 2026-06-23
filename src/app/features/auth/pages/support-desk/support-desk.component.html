@@ -1,0 +1,47 @@
+<div class="auth-static-page">
+  <div class="auth-static-page__topbar">
+    <a routerLink="/auth/sign-in" class="auth-static-page__back">
+      <i class="pi pi-arrow-left"></i>
+      Back to Sign In
+    </a>
+    <app-theme-toggle />
+  </div>
+
+  <div class="auth-static-page__content">
+    <div class="auth-static-page__card">
+      <div class="auth-static-page__icon">
+        <i class="pi pi-headphones"></i>
+      </div>
+      <h1>Support Desk</h1>
+      <p class="auth-static-page__subtitle">
+        Institutional support for EduFlow Admin users.
+      </p>
+      <div class="auth-static-page__body">
+        <p>
+          Our support team assists administrators with account access, course management,
+          integrations, and platform configuration.
+        </p>
+        <p><strong>Support Hours</strong></p>
+        <p>Monday – Friday, 8:00 AM – 6:00 PM (institutional time zone)</p>
+        <p><strong>Contact Channels</strong></p>
+        <ul>
+          <li>Email: <strong>support@eduflow.edu</strong></li>
+          <li>Phone: <strong>+1 (800) 555-0199</strong></li>
+          <li>Live chat: Available inside the admin dashboard</li>
+        </ul>
+        <p><strong>Priority Response</strong></p>
+        <p>Enterprise institutions receive 24/7 critical incident support.</p>
+      </div>
+      <div class="auth-static-page__actions">
+        <p-button label="Create Support Ticket" icon="pi pi-ticket" routerLink="/auth/sign-up" />
+        <p-button
+          label="Back to Sign In"
+          icon="pi pi-arrow-left"
+          severity="secondary"
+          [outlined]="true"
+          routerLink="/auth/sign-in"
+        />
+      </div>
+    </div>
+  </div>
+</div>

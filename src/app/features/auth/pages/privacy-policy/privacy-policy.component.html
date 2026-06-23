@@ -1,0 +1,51 @@
+<div class="auth-static-page">
+  <div class="auth-static-page__topbar">
+    <a routerLink="/auth/sign-in" class="auth-static-page__back">
+      <i class="pi pi-arrow-left"></i>
+      Back to Sign In
+    </a>
+    <app-theme-toggle />
+  </div>
+
+  <div class="auth-static-page__content">
+    <div class="auth-static-page__card">
+      <div class="auth-static-page__icon">
+        <i class="pi pi-shield"></i>
+      </div>
+      <h1>Privacy Policy</h1>
+      <p class="auth-static-page__subtitle">
+        How EduFlow Admin collects, uses, and protects institutional data.
+      </p>
+      <div class="auth-static-page__body">
+        <p>
+          EduFlow Systems Inc. is committed to protecting the privacy of students, faculty,
+          and administrative users. This policy describes how institutional data is handled
+          within the EduFlow Admin platform.
+        </p>
+        <p><strong>Data Collection</strong></p>
+        <p>
+          We collect account information, course records, enrollment data, and usage analytics
+          necessary to operate the administrative dashboard.
+        </p>
+        <p><strong>Data Security</strong></p>
+        <p>
+          All institutional data is encrypted in transit and at rest. Access is restricted
+          by role-based permissions and audited for compliance.
+        </p>
+        <p><strong>Contact</strong></p>
+        <p>
+          For privacy inquiries, contact <strong>privacy@eduflow.edu</strong>.
+        </p>
+      </div>
+      <div class="auth-static-page__actions">
+        <p-button
+          label="Back to Sign In"
+          icon="pi pi-arrow-left"
+          severity="secondary"
+          [outlined]="true"
+          routerLink="/auth/sign-in"
+        />
+      </div>
+    </div>
+  </div>
+</div>

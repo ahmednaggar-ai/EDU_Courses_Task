@@ -1,0 +1,44 @@
+<div class="auth-static-page">
+  <div class="auth-static-page__topbar">
+    <a routerLink="/auth/sign-in" class="auth-static-page__back">
+      <i class="pi pi-arrow-left"></i>
+      Back to Sign In
+    </a>
+    <app-theme-toggle />
+  </div>
+
+  <div class="auth-static-page__content">
+    <div class="auth-static-page__card">
+      <div class="auth-static-page__icon">
+        <i class="pi pi-building"></i>
+      </div>
+      <h1>SSO Portal</h1>
+      <p class="auth-static-page__subtitle">
+        Institutional single sign-on access for EduFlow Admin.
+      </p>
+      <div class="auth-static-page__body">
+        <p>
+          This page represents the institutional SSO portal entry point. In production,
+          users would be redirected to their organization identity provider to authenticate
+          with campus credentials.
+        </p>
+        <ul>
+          <li>Supports SAML 2.0 and OpenID Connect federation</li>
+          <li>Managed by your institution IT department</li>
+          <li>Session tokens are encrypted and institution-scoped</li>
+        </ul>
+        <p><strong>Status:</strong> Static preview page for integration planning.</p>
+      </div>
+      <div class="auth-static-page__actions">
+        <p-button label="Continue with SSO" icon="pi pi-sign-in" routerLink="/courses" />
+        <p-button
+          label="Back to Sign In"
+          icon="pi pi-arrow-left"
+          severity="secondary"
+          [outlined]="true"
+          routerLink="/auth/sign-in"
+        />
+      </div>
+    </div>
+  </div>
+</div>

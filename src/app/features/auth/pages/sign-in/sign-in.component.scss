@@ -42,6 +42,10 @@
   }
 }
 
+:host ::ng-deep .auth-form__signup-btn {
+  margin-top: 0.75rem;
+}
+
 .auth-form__sso {
   display: grid;
   grid-template-columns: 1fr 1fr;

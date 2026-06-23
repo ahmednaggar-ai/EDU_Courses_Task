@@ -8,6 +8,7 @@ import { Password } from 'primeng/password';
 import { Select } from 'primeng/select';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
+import { ThemeToggleComponent } from '../../../../shared/components/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-sign-up',
@@ -21,6 +22,7 @@ import { InputIcon } from 'primeng/inputicon';
     Select,
     IconField,
     InputIcon,
+    ThemeToggleComponent,
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',

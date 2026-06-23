@@ -19,6 +19,32 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/auth/pages/sign-up/sign-up.component').then((m) => m.SignUpComponent),
       },
+      {
+        path: 'sso-portal',
+        loadComponent: () =>
+          import('./features/auth/pages/sso-portal/sso-portal.component').then(
+            (m) => m.SsoPortalComponent,
+          ),
+      },
+      {
+        path: 'azure-ad',
+        loadComponent: () =>
+          import('./features/auth/pages/azure-ad/azure-ad.component').then((m) => m.AzureAdComponent),
+      },
+      {
+        path: 'privacy-policy',
+        loadComponent: () =>
+          import('./features/auth/pages/privacy-policy/privacy-policy.component').then(
+            (m) => m.PrivacyPolicyComponent,
+          ),
+      },
+      {
+        path: 'support-desk',
+        loadComponent: () =>
+          import('./features/auth/pages/support-desk/support-desk.component').then(
+            (m) => m.SupportDeskComponent,
+          ),
+      },
     ],
   },
   {

@@ -1,0 +1,8 @@
+<button
+  type="button"
+  class="theme-toggle"
+  [attr.aria-label]="themeService.toggleLabel()"
+  (click)="toggleTheme()"
+>
+  <i [class]="themeService.toggleIcon()"></i>
+</button>

@@ -25,9 +25,12 @@
 
   <section class="auth-page__form-panel">
     <div class="auth-page__form">
-      <div class="auth-page__form-header">
-        <h2>Welcome Back</h2>
-        <p>Please enter your institutional credentials to continue.</p>
+      <div class="auth-page__form-top">
+        <div class="auth-page__form-header">
+          <h2>Welcome Back</h2>
+          <p>Please enter your institutional credentials to continue.</p>
+        </div>
+        <app-theme-toggle />
       </div>
 
       <form class="auth-form" (ngSubmit)="$event.preventDefault()">
@@ -72,11 +75,34 @@
           routerLink="/courses"
         />
 
+        <p-button
+          label="Sign Up"
+          icon="pi pi-user-plus"
+          severity="secondary"
+          [outlined]="true"
+          styleClass="auth-form__submit auth-form__signup-btn"
+          routerLink="/auth/sign-up"
+        />
+
         <div class="auth-form__divider"><span>OR</span></div>
 
         <div class="auth-form__sso">
-          <p-button label="SSO Portal" icon="pi pi-building" severity="secondary" [outlined]="true" styleClass="auth-form__sso-btn" />
-          <p-button label="Azure AD" icon="pi pi-microsoft" severity="secondary" [outlined]="true" styleClass="auth-form__sso-btn" />
+          <p-button
+            label="SSO Portal"
+            icon="pi pi-building"
+            severity="secondary"
+            [outlined]="true"
+            styleClass="auth-form__sso-btn"
+            routerLink="/auth/sso-portal"
+          />
+          <p-button
+            label="Azure AD"
+            icon="pi pi-microsoft"
+            severity="secondary"
+            [outlined]="true"
+            styleClass="auth-form__sso-btn"
+            routerLink="/auth/azure-ad"
+          />
         </div>
 
         <p class="auth-form__footer-text">
@@ -86,9 +112,9 @@
       </form>
 
       <div class="auth-page__legal">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Support Desk</a>
-        <a href="#">Terms of Service</a>
+        <a routerLink="/auth/privacy-policy">Privacy Policy</a>
+        <a routerLink="/auth/support-desk">Support Desk</a>
+        <a routerLink="/auth/sign-in">Terms of Service</a>
       </div>
     </div>
   </section>

@@ -7,6 +7,7 @@ import { InputText } from 'primeng/inputtext';
 import { Password } from 'primeng/password';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
+import { ThemeToggleComponent } from '../../../../shared/components/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-sign-in',
@@ -19,6 +20,7 @@ import { InputIcon } from 'primeng/inputicon';
     Password,
     IconField,
     InputIcon,
+    ThemeToggleComponent,
   ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.scss',

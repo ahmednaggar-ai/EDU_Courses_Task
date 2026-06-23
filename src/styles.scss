@@ -1,17 +1,7 @@
-@import 'primeicons/primeicons.css';
+@use './app/core/themes/light.theme';
+@use './app/core/themes/dark.theme';
 
-:root {
-  --edu-navy: #0f172a;
-  --edu-navy-light: #1e293b;
-  --edu-blue: #2563eb;
-  --edu-blue-dark: #1d4ed8;
-  --edu-surface: #f8fafc;
-  --edu-border: #e2e8f0;
-  --edu-text: #0f172a;
-  --edu-text-muted: #64748b;
-  --edu-sidebar-width: 260px;
-  --edu-header-height: 72px;
-}
+@import 'primeicons/primeicons.css';
 
 *,
 *::before,

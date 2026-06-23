@@ -1,0 +1,43 @@
+<div class="auth-static-page">
+  <div class="auth-static-page__topbar">
+    <a routerLink="/auth/sign-in" class="auth-static-page__back">
+      <i class="pi pi-arrow-left"></i>
+      Back to Sign In
+    </a>
+    <app-theme-toggle />
+  </div>
+
+  <div class="auth-static-page__content">
+    <div class="auth-static-page__card">
+      <div class="auth-static-page__icon">
+        <i class="pi pi-microsoft"></i>
+      </div>
+      <h1>Azure AD Sign-In</h1>
+      <p class="auth-static-page__subtitle">
+        Microsoft Entra ID authentication for enterprise institutions.
+      </p>
+      <div class="auth-static-page__body">
+        <p>
+          EduFlow Admin can integrate with Azure Active Directory (Microsoft Entra ID)
+          to provide seamless enterprise authentication for faculty and administrative staff.
+        </p>
+        <ul>
+          <li>Multi-factor authentication enforced by your tenant policies</li>
+          <li>Conditional access and group-based role mapping</li>
+          <li>Automatic account provisioning via SCIM (optional)</li>
+        </ul>
+        <p><strong>Status:</strong> Static preview page — Azure AD redirect is not configured.</p>
+      </div>
+      <div class="auth-static-page__actions">
+        <p-button label="Sign in with Azure AD" icon="pi pi-microsoft" routerLink="/courses" />
+        <p-button
+          label="Back to Sign In"
+          icon="pi pi-arrow-left"
+          severity="secondary"
+          [outlined]="true"
+          routerLink="/auth/sign-in"
+        />
+      </div>
+    </div>
+  </div>
+</div>
