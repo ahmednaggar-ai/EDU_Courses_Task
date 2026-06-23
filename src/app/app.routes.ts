@@ -45,6 +45,13 @@ export const routes: Routes = [
             (m) => m.SupportDeskComponent,
           ),
       },
+      {
+        path: 'terms-of-service',
+        loadComponent: () =>
+          import('./features/auth/pages/terms-of-service/terms-of-service.component').then(
+            (m) => m.TermsOfServiceComponent,
+          ),
+      },
     ],
   },
   {

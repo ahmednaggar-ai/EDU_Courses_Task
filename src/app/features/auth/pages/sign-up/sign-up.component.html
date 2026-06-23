@@ -90,7 +90,7 @@
         <div class="auth-form__terms">
           <p-checkbox [(ngModel)]="agreedToTerms" name="terms" [binary]="true" inputId="terms" />
           <label for="terms">
-            I agree to the <a href="#" class="auth-form__link">Terms of Service</a> and
+            I agree to the <a routerLink="/auth/terms-of-service" class="auth-form__link">Terms of Service</a> and
             <a routerLink="/auth/privacy-policy" class="auth-form__link">Privacy Policy</a>.
           </label>
         </div>

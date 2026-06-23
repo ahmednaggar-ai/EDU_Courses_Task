@@ -1,0 +1,56 @@
+<div class="auth-static-page">
+  <div class="auth-static-page__topbar">
+    <a routerLink="/auth/sign-in" class="auth-static-page__back">
+      <i class="pi pi-arrow-left"></i>
+      Back to Sign In
+    </a>
+    <app-theme-toggle />
+  </div>
+
+  <div class="auth-static-page__content">
+    <div class="auth-static-page__card">
+      <div class="auth-static-page__icon">
+        <i class="pi pi-file"></i>
+      </div>
+      <h1>Terms of Service</h1>
+      <p class="auth-static-page__subtitle">
+        Terms governing use of the EduFlow Admin institutional platform.
+      </p>
+      <div class="auth-static-page__body">
+        <p>
+          By accessing or using EduFlow Admin, you agree to these Terms of Service on behalf
+          of your institution. If you do not agree, you may not use the platform.
+        </p>
+        <p><strong>Authorized Use</strong></p>
+        <p>
+          Accounts are provided exclusively to authorized faculty, staff, and administrators.
+          You are responsible for maintaining the confidentiality of your credentials.
+        </p>
+        <p><strong>Institutional Data</strong></p>
+        <p>
+          Your institution retains ownership of all data uploaded to the platform. EduFlow
+          Systems Inc. processes this data solely to provide and improve the service.
+        </p>
+        <p><strong>Acceptable Use</strong></p>
+        <ul>
+          <li>Do not share access credentials with unauthorized users</li>
+          <li>Do not attempt to disrupt or compromise platform security</li>
+          <li>Comply with applicable educational and data protection regulations</li>
+        </ul>
+        <p><strong>Contact</strong></p>
+        <p>
+          For terms-related inquiries, contact <strong>legal@eduflow.edu</strong>.
+        </p>
+      </div>
+      <div class="auth-static-page__actions">
+        <p-button
+          label="Back to Sign In"
+          icon="pi pi-arrow-left"
+          severity="secondary"
+          [outlined]="true"
+          routerLink="/auth/sign-in"
+        />
+      </div>
+    </div>
+  </div>
+</div>
