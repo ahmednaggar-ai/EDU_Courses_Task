@@ -1,0 +1,148 @@
+<div class="settings-page">
+  <div class="settings-page__header">
+    <h1>Settings</h1>
+    <p>Manage your institutional account and system preferences.</p>
+  </div>
+
+  <div class="settings-page__layout">
+    <nav class="settings-page__nav">
+      @for (tab of tabs; track tab.id) {
+        <button
+          type="button"
+          class="settings-page__nav-item"
+          [class.settings-page__nav-item--active]="activeTab() === tab.id"
+          (click)="selectTab(tab.id)"
+        >
+          <i [class]="tab.icon"></i>
+          <span>{{ tab.label }}</span>
+        </button>
+      }
+    </nav>
+
+    <div class="settings-page__panel">
+      @switch (activeTab()) {
+        @case ('general') {
+          <div class="settings-card">
+            <div class="settings-card__header">
+              <div>
+                <h2>General Profile</h2>
+                <p>Personal information and institutional identity.</p>
+              </div>
+              <div class="settings-card__avatar">
+                <img src="https://i.pravatar.cc/120?img=33" alt="Dr. Julian Reed" />
+                <button type="button" class="settings-card__avatar-edit" aria-label="Edit photo">
+                  <i class="pi pi-pencil"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="settings-card__grid">
+              <div class="settings-field">
+                <label>ADMIN FULL NAME</label>
+                <input pInputText type="text" [(ngModel)]="fullName" />
+              </div>
+              <div class="settings-field">
+                <label>INSTITUTIONAL EMAIL</label>
+                <input pInputText type="email" [(ngModel)]="email" />
+              </div>
+              <div class="settings-field">
+                <label>DEPARTMENT</label>
+                <p-select
+                  [(ngModel)]="department"
+                  [options]="departments"
+                  optionLabel="label"
+                  optionValue="value"
+                  styleClass="settings-field__select"
+                />
+              </div>
+              <div class="settings-field">
+                <label>ROLE</label>
+                <input pInputText type="text" [(ngModel)]="role" [disabled]="true" />
+              </div>
+            </div>
+          </div>
+        }
+        @case ('security') {
+          <div class="settings-card">
+            <div class="settings-card__header">
+              <div>
+                <h2>Account Security</h2>
+                <p>Manage passwords and authentication methods.</p>
+              </div>
+            </div>
+            <div class="settings-card__grid settings-card__grid--single">
+              <div class="settings-field">
+                <label>CURRENT PASSWORD</label>
+                <input pInputText type="password" [(ngModel)]="currentPassword" placeholder="••••••••" />
+              </div>
+              <div class="settings-field">
+                <label>NEW PASSWORD</label>
+                <input pInputText type="password" [(ngModel)]="newPassword" placeholder="••••••••" />
+              </div>
+            </div>
+            <p class="settings-card__hint">
+              Two-factor authentication and SSO are managed by your institution IT department.
+            </p>
+          </div>
+        }
+        @case ('notifications') {
+          <div class="settings-card">
+            <div class="settings-card__header">
+              <div>
+                <h2>Notifications</h2>
+                <p>Configure how you receive institutional alerts.</p>
+              </div>
+            </div>
+            <div class="settings-toggle-list">
+              <label class="settings-toggle">
+                <input type="checkbox" [(ngModel)]="emailNotifications" />
+                <span>Email notifications for course updates</span>
+              </label>
+              <label class="settings-toggle">
+                <input type="checkbox" [(ngModel)]="pushNotifications" />
+                <span>Push notifications for system alerts</span>
+              </label>
+            </div>
+          </div>
+        }
+        @case ('system') {
+          <div class="settings-card">
+            <div class="settings-card__header">
+              <div>
+                <h2>System Preferences</h2>
+                <p>Regional and display preferences for your workspace.</p>
+              </div>
+            </div>
+            <div class="settings-card__grid">
+              <div class="settings-field">
+                <label>LANGUAGE</label>
+                <p-select
+                  [(ngModel)]="language"
+                  [options]="languages"
+                  optionLabel="label"
+                  optionValue="value"
+                  styleClass="settings-field__select"
+                />
+              </div>
+              <div class="settings-field">
+                <label>TIME ZONE</label>
+                <p-select
+                  [(ngModel)]="timezone"
+                  [options]="timezones"
+                  optionLabel="label"
+                  optionValue="value"
+                  styleClass="settings-field__select"
+                />
+              </div>
+            </div>
+          </div>
+        }
+      }
+
+      <div class="settings-page__footer">
+        <p-button label="Cancel" [text]="true" severity="secondary" (onClick)="cancel()" />
+        <p-button label="Save Changes" (onClick)="save()" />
+      </div>
+    </div>
+  </div>
+</div>

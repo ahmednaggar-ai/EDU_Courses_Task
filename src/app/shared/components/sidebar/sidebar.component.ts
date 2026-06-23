@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { ProgressBar } from 'primeng/progressbar';
 
 interface NavItem {
   label: string;
@@ -10,7 +9,7 @@ interface NavItem {
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterLink, RouterLinkActive, ProgressBar],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
 })
@@ -21,6 +20,4 @@ export class SidebarComponent {
     { label: 'Instructors', icon: 'pi pi-users', route: '/instructors' },
     { label: 'Settings', icon: 'pi pi-cog', route: '/settings' },
   ];
-
-  protected readonly storageUsed = 72;
 }

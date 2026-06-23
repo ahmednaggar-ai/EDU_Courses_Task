@@ -65,6 +65,20 @@ export const routes: Routes = [
             (m) => m.CoursesListComponent,
           ),
       },
+      {
+        path: 'instructors',
+        loadComponent: () =>
+          import('./features/instructors/pages/instructors-list/instructors-list.component').then(
+            (m) => m.InstructorsListComponent,
+          ),
+      },
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('./features/settings/pages/settings/settings.component').then(
+            (m) => m.SettingsComponent,
+          ),
+      },
     ],
   },
   { path: '**', redirectTo: 'auth/sign-in' },
