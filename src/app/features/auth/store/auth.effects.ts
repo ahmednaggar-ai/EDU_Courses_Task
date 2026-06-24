@@ -149,18 +149,8 @@ export class AuthEffects {
         };
 
         this.authStorage.addRegisteredUser(user);
-        this.authStorage.saveSession({
-          email: user.email,
-          password,
-          rememberMe: true,
-        });
 
-        return of(
-          AuthActions.loadUsersSuccess({
-            users: [...users, user],
-          }),
-          AuthActions.signUpSuccess({ user }),
-        );
+        return of(AuthActions.signUpSuccess({ user }));
       }),
     ),
   );
@@ -198,9 +188,9 @@ export class AuthEffects {
         ofType(AuthActions.signUpSuccess),
         tap(({ user }) => {
           this.toast.success('Account created', {
-            message: `${user.name}, your account is ready.`,
+            message: `${user.name}, please sign in with your new credentials.`,
           });
-          void this.router.navigate(['/dashboard']);
+          void this.router.navigate(['/auth/sign-in']);
         }),
       ),
     { dispatch: false },
