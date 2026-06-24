@@ -93,8 +93,29 @@ export class CoursesListComponent {
     this.tableService.setCellHandlers({
       tagSeverity: (row) => categorySeverityMap[row.category],
       statusClass: (row) => `status-dot--${row.status.toLowerCase()}`,
-      actionClick: () => undefined,
     });
+
+    this.tableService.setRowActions([
+      {
+        label: 'Edit',
+        icon: 'pi pi-pencil',
+        command: (course) => this.onEditCourse(course),
+      },
+      {
+        label: 'Delete',
+        icon: 'pi pi-trash',
+        styleClass: 'app-table__action-item--danger',
+        command: (course) => this.onDeleteCourse(course),
+      },
+    ]);
+  }
+
+  private onEditCourse(course: Course): void {
+    console.log('Edit course:', course);
+  }
+
+  private onDeleteCourse(course: Course): void {
+    console.log('Delete course:', course);
   }
 
   private initFilters(): void {

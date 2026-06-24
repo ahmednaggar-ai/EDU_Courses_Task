@@ -122,6 +122,20 @@
   }
 }
 
+:host ::ng-deep {
+  .app-table__action-item--danger {
+    .p-menuitem-link,
+    .p-menuitem-icon,
+    .p-menuitem-text {
+      color: #ef4444;
+    }
+
+    .p-menuitem-link:hover {
+      background: rgba(239, 68, 68, 0.08);
+    }
+  }
+}
+
 .app-table__state {
   display: flex;
   flex-direction: column;

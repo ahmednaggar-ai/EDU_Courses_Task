@@ -64,10 +64,31 @@ export class InstructorsListComponent {
 
     this.tableService.setCellHandlers({
       tagSeverity: (row) => (row.status === 'Active' ? 'success' : 'warn'),
-      actionClick: () => undefined,
     });
 
+    this.tableService.setRowActions([
+      {
+        label: 'Edit',
+        icon: 'pi pi-pencil',
+        command: (instructor) => this.onEditInstructor(instructor),
+      },
+      {
+        label: 'Delete',
+        icon: 'pi pi-trash',
+        styleClass: 'app-table__action-item--danger',
+        command: (instructor) => this.onDeleteInstructor(instructor),
+      },
+    ]);
+
     this.tableService.setPageChangeHandler((event) => this.onPageChange(event));
+  }
+
+  private onEditInstructor(instructor: Instructor): void {
+    console.log('Edit instructor:', instructor);
+  }
+
+  private onDeleteInstructor(instructor: Instructor): void {
+    console.log('Delete instructor:', instructor);
   }
 
   private initFilters(): void {

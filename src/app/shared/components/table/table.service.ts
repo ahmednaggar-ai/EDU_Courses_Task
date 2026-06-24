@@ -5,6 +5,7 @@ import {
   TableConfig,
   TablePageChangeHandler,
   TablePageEvent,
+  TableRowAction,
 } from './table.interface';
 
 @Injectable()
@@ -22,6 +23,7 @@ export class TableService<T = unknown> {
   private readonly totalRecordsSignal = signal(0);
   private readonly styleClassSignal = signal('app-table');
   private readonly cellHandlersSignal = signal<TableCellHandlers<T>>({});
+  private readonly rowActionsSignal = signal<TableRowAction<T>[]>([]);
 
   private pageChangeHandler: TablePageChangeHandler | null = null;
 
@@ -37,6 +39,7 @@ export class TableService<T = unknown> {
   readonly first = this.firstSignal.asReadonly();
   readonly styleClass = this.styleClassSignal.asReadonly();
   readonly cellHandlers = this.cellHandlersSignal.asReadonly();
+  readonly rowActions = this.rowActionsSignal.asReadonly();
 
   readonly lazy = computed(() => !this.clientSidePaginationSignal());
   readonly isEmpty = computed(
@@ -94,6 +97,10 @@ export class TableService<T = unknown> {
 
   setCellHandlers(handlers: TableCellHandlers<T>): void {
     this.cellHandlersSignal.set(handlers);
+  }
+
+  setRowActions(actions: TableRowAction<T>[]): void {
+    this.rowActionsSignal.set(actions);
   }
 
   setLoading(loading: boolean): void {

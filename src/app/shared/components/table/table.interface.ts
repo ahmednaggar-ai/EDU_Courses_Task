@@ -34,8 +34,15 @@ export interface TableConfig {
 
 export type TablePageChangeHandler = (event: TablePageEvent) => void;
 
+export interface TableRowAction<T = unknown> {
+  label: string;
+  icon?: string;
+  styleClass?: string;
+  visible?: (row: T) => boolean;
+  command: (row: T) => void;
+}
+
 export interface TableCellHandlers<T = unknown> {
   tagSeverity?: (row: T, field: string) => string;
   statusClass?: (row: T, field: string) => string;
-  actionClick?: (row: T) => void;
 }

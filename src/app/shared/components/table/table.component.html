@@ -94,7 +94,7 @@
                       type="button"
                       class="app-table__action-btn"
                       aria-label="Row actions"
-                      (click)="onActionClick(row)"
+                      (click)="openActionMenu($event, row)"
                     >
                       <i class="pi pi-ellipsis-v"></i>
                     </button>
@@ -122,4 +122,6 @@
       </ng-template>
     </p-table>
   }
+
+  <p-menu #actionMenu [model]="menuItems" [popup]="true" appendTo="body" />
 </div>
