@@ -28,10 +28,9 @@
     flex-wrap: wrap;
   }
 
-  &__filters {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
+  app-filters {
+    flex: 1;
+    min-width: 0;
   }
 
   &__actions {
@@ -65,10 +64,6 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
   }
-}
-
-:host ::ng-deep .courses-page__filter {
-  min-width: 10rem;
 }
 
 .stat-card {

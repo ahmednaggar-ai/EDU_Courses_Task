@@ -8,26 +8,7 @@
   </div>
 
   <div class="courses-page__toolbar">
-    <div class="courses-page__filters">
-      <p-select
-        [ngModel]="selectedStatus()"
-        (ngModelChange)="selectedStatus.set($event)"
-        [options]="statusOptions"
-        optionLabel="label"
-        optionValue="value"
-        placeholder="All Status"
-        styleClass="courses-page__filter"
-      />
-      <p-select
-        [ngModel]="selectedCategory()"
-        (ngModelChange)="selectedCategory.set($event)"
-        [options]="categoryOptions"
-        optionLabel="label"
-        optionValue="value"
-        placeholder="All Categories"
-        styleClass="courses-page__filter"
-      />
-    </div>
+    <app-filters />
     <div class="courses-page__actions">
       <button type="button" class="courses-page__action-link">
         <i class="pi pi-filter"></i> More Filters

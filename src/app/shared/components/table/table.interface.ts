@@ -28,6 +28,8 @@ export interface TableConfig {
   columns?: TableColumn[];
   styleClass?: string;
   loading?: boolean;
+  emptyMessage?: string;
+  skeletonRows?: number;
 }
 
 export type TablePageChangeHandler = (event: TablePageEvent) => void;

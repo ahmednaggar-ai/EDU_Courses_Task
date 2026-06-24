@@ -8,26 +8,7 @@
   </div>
 
   <div class="instructors-page__toolbar">
-    <div class="instructors-page__filters">
-      <p-select
-        [ngModel]="selectedDepartment()"
-        (ngModelChange)="selectedDepartment.set($event)"
-        [options]="departmentOptions"
-        optionLabel="label"
-        optionValue="value"
-        placeholder="All Departments"
-        styleClass="instructors-page__filter"
-      />
-      <p-select
-        [ngModel]="selectedStatus()"
-        (ngModelChange)="selectedStatus.set($event)"
-        [options]="statusOptions"
-        optionLabel="label"
-        optionValue="value"
-        placeholder="All Status"
-        styleClass="instructors-page__filter"
-      />
-    </div>
+    <app-filters />
     <button type="button" class="instructors-page__export">
       <i class="pi pi-upload"></i> Export
     </button>

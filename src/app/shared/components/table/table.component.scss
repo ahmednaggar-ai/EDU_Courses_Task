@@ -121,3 +121,44 @@
     color: var(--edu-text);
   }
 }
+
+.app-table__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  gap: 0.5rem;
+}
+
+.app-table__state-icon {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+.app-table__state-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--edu-text);
+}
+
+.app-table__state-message {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--edu-text-muted);
+  max-width: 24rem;
+}
+
+.app-table__state--error {
+  .app-table__state-icon {
+    color: #ef4444;
+  }
+}
+
+.app-table__state--empty {
+  .app-table__state-icon {
+    color: var(--edu-text-muted);
+  }
+}

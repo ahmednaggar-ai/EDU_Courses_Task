@@ -12,6 +12,9 @@ export class TableService<T = unknown> {
   private readonly dataSignal = signal<T[]>([]);
   private readonly columnsSignal = signal<TableColumn[]>([]);
   private readonly loadingSignal = signal(false);
+  private readonly errorSignal = signal<string | null>(null);
+  private readonly emptyMessageSignal = signal('No records found.');
+  private readonly skeletonRowsSignal = signal(5);
   private readonly clientSidePaginationSignal = signal(true);
   private readonly paginatorEnabledSignal = signal(true);
   private readonly rowsSignal = signal(10);
@@ -25,6 +28,9 @@ export class TableService<T = unknown> {
   readonly data = this.dataSignal.asReadonly();
   readonly columns = this.columnsSignal.asReadonly();
   readonly loading = this.loadingSignal.asReadonly();
+  readonly error = this.errorSignal.asReadonly();
+  readonly emptyMessage = this.emptyMessageSignal.asReadonly();
+  readonly skeletonRows = this.skeletonRowsSignal.asReadonly();
   readonly clientSidePagination = this.clientSidePaginationSignal.asReadonly();
   readonly paginatorEnabled = this.paginatorEnabledSignal.asReadonly();
   readonly rows = this.rowsSignal.asReadonly();
@@ -33,6 +39,15 @@ export class TableService<T = unknown> {
   readonly cellHandlers = this.cellHandlersSignal.asReadonly();
 
   readonly lazy = computed(() => !this.clientSidePaginationSignal());
+  readonly isEmpty = computed(
+    () =>
+      !this.loadingSignal() &&
+      !this.errorSignal() &&
+      this.dataSignal().length === 0,
+  );
+  readonly skeletonPlaceholders = computed(() =>
+    Array.from({ length: this.skeletonRowsSignal() }, (_, index) => index),
+  );
   readonly totalRecords = computed(() =>
     this.clientSidePaginationSignal()
       ? this.dataSignal().length
@@ -61,6 +76,12 @@ export class TableService<T = unknown> {
     if (config.loading !== undefined) {
       this.loadingSignal.set(config.loading);
     }
+    if (config.emptyMessage !== undefined) {
+      this.emptyMessageSignal.set(config.emptyMessage);
+    }
+    if (config.skeletonRows !== undefined) {
+      this.skeletonRowsSignal.set(config.skeletonRows);
+    }
   }
 
   setData(data: T[]): void {
@@ -77,6 +98,17 @@ export class TableService<T = unknown> {
 
   setLoading(loading: boolean): void {
     this.loadingSignal.set(loading);
+  }
+
+  setError(message: string | null): void {
+    this.errorSignal.set(message);
+    if (message) {
+      this.dataSignal.set([]);
+    }
+  }
+
+  clearError(): void {
+    this.errorSignal.set(null);
   }
 
   setClientSidePagination(clientSide: boolean): void {

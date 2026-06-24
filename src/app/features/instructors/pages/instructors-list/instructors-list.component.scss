@@ -28,10 +28,9 @@
     flex-wrap: wrap;
   }
 
-  &__filters {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
+  app-filters {
+    flex: 1;
+    min-width: 0;
   }
 
   &__export {
@@ -53,8 +52,4 @@
   app-table {
     display: block;
   }
-}
-
-:host ::ng-deep .instructors-page__filter {
-  min-width: 10rem;
 }

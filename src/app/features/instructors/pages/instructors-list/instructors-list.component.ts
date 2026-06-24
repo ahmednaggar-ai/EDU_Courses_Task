@@ -1,41 +1,26 @@
-import { Component, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Button } from 'primeng/button';
-import { Select } from 'primeng/select';
+import { timer } from 'rxjs';
+import { FilterService } from '../../../../shared/components/filters/filter.service';
+import { FiltersComponent } from '../../../../shared/components/filters/filters.component';
+import { FilterValues } from '../../../../shared/components/filters/filters.interface';
 import { TableComponent } from '../../../../shared/components/table/table.component';
 import { TablePageEvent } from '../../../../shared/components/table/table.interface';
 import { TableService } from '../../../../shared/components/table/table.service';
 import { Instructor } from '../../models/instructor.interface';
-import {
-  InstructorDepartmentFilterOption,
-  InstructorStatusFilterOption,
-} from './instructors-list.interface';
 
 @Component({
   selector: 'app-instructors-list',
-  providers: [TableService],
-  imports: [FormsModule, Button, Select, TableComponent],
+  providers: [TableService, FilterService],
+  imports: [Button, FiltersComponent, TableComponent],
   templateUrl: './instructors-list.component.html',
   styleUrl: './instructors-list.component.scss',
 })
 export class InstructorsListComponent {
+  private readonly destroyRef = inject(DestroyRef);
   private readonly tableService = inject(TableService<Instructor>);
-
-  protected readonly selectedDepartment = signal<InstructorDepartmentFilterOption['value']>(null);
-  protected readonly selectedStatus = signal<InstructorStatusFilterOption['value']>(null);
-
-  protected readonly departmentOptions: InstructorDepartmentFilterOption[] = [
-    { label: 'All Departments', value: null },
-    { label: 'Academic Affairs', value: 'Academic Affairs' },
-    { label: 'Computer Science', value: 'Computer Science' },
-    { label: 'Design', value: 'Design' },
-  ];
-
-  protected readonly statusOptions: InstructorStatusFilterOption[] = [
-    { label: 'All Status', value: null },
-    { label: 'Active', value: 'Active' },
-    { label: 'On Leave', value: 'On Leave' },
-  ];
+  private readonly filterService = inject(FilterService);
 
   private readonly instructorsData: Instructor[] = [
     {
@@ -80,8 +65,11 @@ export class InstructorsListComponent {
     },
   ];
 
+  private filteredInstructors: Instructor[] = [...this.instructorsData];
+
   constructor() {
     this.initTable();
+    this.initFilters();
   }
 
   private initTable(): void {
@@ -89,7 +77,9 @@ export class InstructorsListComponent {
       clientSidePagination: false,
       paginatorEnabled: true,
       rows: 10,
-      totalRecords: this.instructorsData.length,
+      skeletonRows: 5,
+      emptyMessage: 'No instructors match your filters. Try adjusting your search.',
+      totalRecords: this.filteredInstructors.length,
       styleClass: 'app-table',
       columns: [
         { field: 'name', header: 'INSTRUCTOR', type: 'instructor-name' },
@@ -110,15 +100,89 @@ export class InstructorsListComponent {
     this.loadInstructorsPage({ first: 0, rows: 10 });
   }
 
+  private initFilters(): void {
+    this.filterService.configure({
+      debounceMs: 200,
+      fields: [
+        {
+          key: 'search',
+          type: 'text',
+          placeholder: 'Search instructors...',
+        },
+        {
+          key: 'department',
+          type: 'select',
+          placeholder: 'All Departments',
+          options: [
+            { label: 'All Departments', value: null },
+            { label: 'Academic Affairs', value: 'Academic Affairs' },
+            { label: 'Computer Science', value: 'Computer Science' },
+            { label: 'Design', value: 'Design' },
+          ],
+        },
+        {
+          key: 'status',
+          type: 'select',
+          placeholder: 'All Status',
+          options: [
+            { label: 'All Status', value: null },
+            { label: 'Active', value: 'Active' },
+            { label: 'On Leave', value: 'On Leave' },
+          ],
+        },
+        {
+          key: 'joinedDate',
+          type: 'datepicker',
+          placeholder: 'Joined after',
+        },
+      ],
+    });
+
+    this.filterService.setFilterHandler((values) => this.applyFilters(values));
+  }
+
+  private applyFilters(values: FilterValues): void {
+    const search = String(values['search'] ?? '')
+      .trim()
+      .toLowerCase();
+
+    this.filteredInstructors = this.instructorsData.filter((instructor) => {
+      if (values['department'] && instructor.department !== values['department']) {
+        return false;
+      }
+
+      if (values['status'] && instructor.status !== values['status']) {
+        return false;
+      }
+
+      if (search) {
+        const haystack =
+          `${instructor.name} ${instructor.email} ${instructor.id}`.toLowerCase();
+        if (!haystack.includes(search)) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+
+    this.loadInstructorsPage({ first: 0, rows: this.tableService.rows() });
+  }
+
   private loadInstructorsPage(event: TablePageEvent): void {
     this.tableService.setLoading(true);
+    this.tableService.clearError();
 
-    const pageData = this.instructorsData.slice(event.first, event.first + event.rows);
+    timer(600)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        const pageData = this.filteredInstructors.slice(event.first, event.first + event.rows);
 
-    this.tableService.setData(pageData);
-    this.tableService.setTotalRecords(this.instructorsData.length);
-    this.tableService.setFirst(event.first);
-    this.tableService.setRows(event.rows);
-    this.tableService.setLoading(false);
+        this.tableService.setData(pageData);
+        this.tableService.setTotalRecords(this.filteredInstructors.length);
+        this.tableService.setFirst(event.first);
+        this.tableService.setRows(event.rows);
+        this.tableService.setLoading(false);
+      });
   }
 }

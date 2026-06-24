@@ -1,0 +1,52 @@
+@if (filterService.fields().length) {
+  <form class="app-filters" [formGroup]="filterService.form">
+    <div class="app-filters__fields">
+      @for (field of filterService.fields(); track field.key) {
+        <div class="app-filters__field">
+          @switch (fieldType(field)) {
+            @case ('text') {
+              <input
+                pInputText
+                type="text"
+                [formControlName]="field.key"
+                [placeholder]="field.placeholder ?? field.label ?? ''"
+                class="app-filters__control"
+              />
+            }
+            @case ('select') {
+              <p-select
+                [formControlName]="field.key"
+                [options]="field.options ?? []"
+                optionLabel="label"
+                optionValue="value"
+                [placeholder]="field.placeholder ?? field.label ?? 'Select'"
+                styleClass="app-filters__control"
+              />
+            }
+            @case ('datepicker') {
+              <p-datePicker
+                [formControlName]="field.key"
+                [placeholder]="field.placeholder ?? field.label ?? 'Select date'"
+                [dateFormat]="field.dateFormat ?? 'mm/dd/yy'"
+                [showIcon]="true"
+                styleClass="app-filters__control"
+              />
+            }
+          }
+        </div>
+      }
+    </div>
+
+    @if (filterService.showClearButton()) {
+      <p-button
+        label="Clear Filters"
+        icon="pi pi-filter-slash"
+        severity="secondary"
+        [outlined]="true"
+        type="button"
+        [disabled]="!filterService.hasActiveFilters()"
+        (onClick)="filterService.clearFilters()"
+      />
+    }
+  </form>
+}

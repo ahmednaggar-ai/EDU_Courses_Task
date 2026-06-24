@@ -1,43 +1,26 @@
-import { Component, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Button } from 'primeng/button';
-import { Select } from 'primeng/select';
+import { timer } from 'rxjs';
+import { FilterService } from '../../../../shared/components/filters/filter.service';
+import { FiltersComponent } from '../../../../shared/components/filters/filters.component';
+import { FilterValues } from '../../../../shared/components/filters/filters.interface';
 import { TableComponent } from '../../../../shared/components/table/table.component';
 import { TableService } from '../../../../shared/components/table/table.service';
 import { Course } from '../../models/course.interface';
-import {
-  CourseCategoryFilterOption,
-  CourseCategorySeverityMap,
-  CourseStat,
-  CourseStatusFilterOption,
-} from './courses-list.interface';
+import { CourseCategorySeverityMap, CourseStat } from './courses-list.interface';
 
 @Component({
   selector: 'app-courses-list',
-  providers: [TableService],
-  imports: [FormsModule, Button, Select, TableComponent],
+  providers: [TableService, FilterService],
+  imports: [Button, FiltersComponent, TableComponent],
   templateUrl: './courses-list.component.html',
   styleUrl: './courses-list.component.scss',
 })
 export class CoursesListComponent {
+  private readonly destroyRef = inject(DestroyRef);
   private readonly tableService = inject(TableService<Course>);
-
-  protected readonly selectedStatus = signal<CourseStatusFilterOption['value']>(null);
-  protected readonly selectedCategory = signal<CourseCategoryFilterOption['value']>(null);
-
-  protected readonly statusOptions: CourseStatusFilterOption[] = [
-    { label: 'All Status', value: null },
-    { label: 'Active', value: 'Active' },
-    { label: 'Draft', value: 'Draft' },
-    { label: 'Archived', value: 'Archived' },
-  ];
-
-  protected readonly categoryOptions: CourseCategoryFilterOption[] = [
-    { label: 'All Categories', value: null },
-    { label: 'Frontend', value: 'FRONTEND' },
-    { label: 'Design', value: 'DESIGN' },
-    { label: 'Backend', value: 'BACKEND' },
-  ];
+  private readonly filterService = inject(FilterService);
 
   private readonly coursesData: Course[] = [
     {
@@ -135,6 +118,8 @@ export class CoursesListComponent {
 
   constructor() {
     this.initTable();
+    this.initFilters();
+    this.loadCourses();
   }
 
   private initTable(): void {
@@ -142,6 +127,8 @@ export class CoursesListComponent {
       clientSidePagination: true,
       paginatorEnabled: true,
       rows: 10,
+      skeletonRows: 5,
+      emptyMessage: 'No courses match your filters. Try adjusting your search.',
       styleClass: 'app-table',
       columns: [
         { field: 'name', header: 'COURSE NAME', type: 'course-name' },
@@ -159,7 +146,80 @@ export class CoursesListComponent {
       statusClass: (row) => `status-dot--${row.status.toLowerCase()}`,
       actionClick: () => undefined,
     });
+  }
 
-    this.tableService.setData(this.coursesData);
+  private initFilters(): void {
+    this.filterService.configure({
+      debounceMs: 200,
+      fields: [
+        {
+          key: 'search',
+          type: 'text',
+          placeholder: 'Search courses...',
+        },
+        {
+          key: 'status',
+          type: 'select',
+          placeholder: 'All Status',
+          options: [
+            { label: 'All Status', value: null },
+            { label: 'Active', value: 'Active' },
+            { label: 'Draft', value: 'Draft' },
+            { label: 'Archived', value: 'Archived' },
+          ],
+        },
+        {
+          key: 'category',
+          type: 'select',
+          placeholder: 'All Categories',
+          options: [
+            { label: 'All Categories', value: null },
+            { label: 'Frontend', value: 'FRONTEND' },
+            { label: 'Design', value: 'DESIGN' },
+            { label: 'Backend', value: 'BACKEND' },
+          ],
+        },
+      ],
+    });
+
+    this.filterService.setFilterHandler((values) => this.loadCourses(values));
+  }
+
+  private loadCourses(values: FilterValues = {}): void {
+    this.tableService.setLoading(true);
+    this.tableService.clearError();
+
+    timer(800)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        const filtered = this.filterCourses(values);
+        this.tableService.setData(filtered);
+        this.tableService.setLoading(false);
+      });
+  }
+
+  private filterCourses(values: FilterValues): Course[] {
+    const search = String(values['search'] ?? '')
+      .trim()
+      .toLowerCase();
+
+    return this.coursesData.filter((course) => {
+      if (values['status'] && course.status !== values['status']) {
+        return false;
+      }
+
+      if (values['category'] && course.category !== values['category']) {
+        return false;
+      }
+
+      if (search) {
+        const haystack = `${course.name} ${course.instructor} ${course.id}`.toLowerCase();
+        if (!haystack.includes(search)) {
+          return false;
+        }
+      }
+
+      return true;
+    });
   }
 }
