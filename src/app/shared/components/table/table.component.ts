@@ -1,4 +1,4 @@
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, inject, viewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
@@ -10,7 +10,7 @@ import { TableService } from './table.service';
 
 @Component({
   selector: 'app-table',
-  imports: [TableModule, Tag, CurrencyPipe, Skeleton, Menu],
+  imports: [TableModule, Tag, CurrencyPipe, DatePipe, Skeleton, Menu],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })

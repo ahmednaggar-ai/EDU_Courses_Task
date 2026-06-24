@@ -131,6 +131,8 @@ export class InstructorsListComponent {
         { field: 'department', header: 'DEPARTMENT', type: 'text', sortable: true },
         { field: 'courses', header: 'COURSES', type: 'text', sortable: true },
         { field: 'status', header: 'STATUS', type: 'tag' },
+        { field: 'createdDate', header: 'CREATED', type: 'date', sortable: true },
+        { field: 'updatedDate', header: 'UPDATED', type: 'date', sortable: true },
         { field: 'actions', header: '', type: 'actions' },
       ],
     });

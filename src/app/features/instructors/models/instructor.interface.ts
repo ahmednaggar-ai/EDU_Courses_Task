@@ -6,6 +6,8 @@ export interface Instructor {
   email: string;
   department: string;
   status: InstructorStatus;
+  createdDate: string;
+  updatedDate: string;
 }
 
 export interface InstructorTableRow extends Instructor {

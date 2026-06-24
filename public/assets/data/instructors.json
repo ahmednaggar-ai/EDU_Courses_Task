@@ -4,34 +4,44 @@
     "name": "Dr. Sarah Chen",
     "email": "s.chen@eduflow.edu",
     "department": "Computer Science",
-    "status": "Active"
+    "status": "Active",
+    "createdDate": "2023-09-12",
+    "updatedDate": "2024-05-30"
   },
   {
     "id": "INS-002",
     "name": "Prof. Michael Ross",
     "email": "m.ross@eduflow.edu",
     "department": "Design",
-    "status": "Active"
+    "status": "Active",
+    "createdDate": "2023-10-05",
+    "updatedDate": "2024-04-15"
   },
   {
     "id": "INS-003",
     "name": "Dr. Emily Watson",
     "email": "e.watson@eduflow.edu",
     "department": "Computer Science",
-    "status": "Active"
+    "status": "Active",
+    "createdDate": "2024-01-18",
+    "updatedDate": "2024-06-02"
   },
   {
     "id": "INS-004",
     "name": "Prof. James Liu",
     "email": "j.liu@eduflow.edu",
     "department": "Academic Affairs",
-    "status": "On Leave"
+    "status": "On Leave",
+    "createdDate": "2022-08-22",
+    "updatedDate": "2024-03-01"
   },
   {
     "id": "INS-005",
     "name": "Dr. Anna Patel",
     "email": "a.patel@eduflow.edu",
     "department": "Design",
-    "status": "Active"
+    "status": "Active",
+    "createdDate": "2024-02-14",
+    "updatedDate": "2024-05-22"
   }
 ]

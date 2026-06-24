@@ -62,6 +62,8 @@ export class InstructorFormDialogComponent implements OnInit {
       email: value.email,
       department: value.department!,
       status: value.status!,
+      createdDate: existing?.createdDate ?? this.todayIsoDate(),
+      updatedDate: this.todayIsoDate(),
     };
 
     const result: InstructorFormDialogResult = { instructor };
@@ -82,5 +84,9 @@ export class InstructorFormDialogComponent implements OnInit {
 
   private generateInstructorId(): string {
     return `INS-${String(Date.now()).slice(-6)}`;
+  }
+
+  private todayIsoDate(): string {
+    return new Date().toISOString().split('T')[0];
   }
 }

@@ -12,6 +12,7 @@ export interface Course {
   status: CourseStatus;
   description?: string;
   createdDate: string;
+  updatedDate: string;
   icon: string;
   iconColor: string;
 }

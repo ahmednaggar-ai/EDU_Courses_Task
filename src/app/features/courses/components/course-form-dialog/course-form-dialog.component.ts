@@ -137,6 +137,7 @@ export class CourseFormDialogComponent implements OnInit {
       status: value.status!,
       description: value.description.trim() || undefined,
       createdDate: existing?.createdDate ?? this.todayIsoDate(),
+      updatedDate: this.todayIsoDate(),
       icon: existing?.icon ?? iconDefaults.icon,
       iconColor: existing?.iconColor ?? iconDefaults.iconColor,
     };

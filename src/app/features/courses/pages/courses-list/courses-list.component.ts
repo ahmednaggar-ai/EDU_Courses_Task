@@ -162,6 +162,8 @@ export class CoursesListComponent {
         { field: 'duration', header: 'DURATION', type: 'text' },
         { field: 'price', header: 'PRICE', type: 'currency', sortable: true },
         { field: 'status', header: 'STATUS', type: 'status-dot' },
+        { field: 'createdDate', header: 'CREATED', type: 'date', sortable: true },
+        { field: 'updatedDate', header: 'UPDATED', type: 'date', sortable: true },
         { field: 'actions', header: '', type: 'actions' },
       ],
     });

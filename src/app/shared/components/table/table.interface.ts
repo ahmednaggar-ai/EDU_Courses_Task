@@ -5,6 +5,7 @@ export type TableCellType =
   | 'status-dot'
   | 'course-name'
   | 'instructor-name'
+  | 'date'
   | 'actions';
 
 export interface TableColumn {

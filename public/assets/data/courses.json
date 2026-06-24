@@ -9,6 +9,7 @@
     "status": "Active",
     "description": "Learn the core concepts of Angular including components, services, routing, and reactive forms.",
     "createdDate": "2024-01-15",
+    "updatedDate": "2024-06-01",
     "icon": "pi pi-code",
     "iconColor": "#2563eb"
   },
@@ -22,6 +23,7 @@
     "status": "Active",
     "description": "Explore user-centered design, wireframing, prototyping, and usability testing fundamentals.",
     "createdDate": "2024-02-03",
+    "updatedDate": "2024-05-18",
     "icon": "pi pi-palette",
     "iconColor": "#0ea5e9"
   },
@@ -35,6 +37,7 @@
     "status": "Draft",
     "description": "Build scalable REST APIs with Node.js, Express, and modern backend patterns.",
     "createdDate": "2024-03-10",
+    "updatedDate": "2024-03-10",
     "icon": "pi pi-server",
     "iconColor": "#6366f1"
   },
@@ -48,6 +51,7 @@
     "status": "Active",
     "description": "Master advanced TypeScript features including generics, utility types, and strict typing patterns.",
     "createdDate": "2024-04-22",
+    "updatedDate": "2024-06-10",
     "icon": "pi pi-code",
     "iconColor": "#2563eb"
   },
@@ -61,6 +65,7 @@
     "status": "Archived",
     "description": "Design relational and NoSQL database schemas, indexing strategies, and data modeling best practices.",
     "createdDate": "2023-11-08",
+    "updatedDate": "2024-01-20",
     "icon": "pi pi-database",
     "iconColor": "#6366f1"
   }
