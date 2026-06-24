@@ -19,6 +19,7 @@ import { TableComponent } from '../../../../shared/components/table/table.compon
 import { TablePageEvent, TableSortEvent } from '../../../../shared/components/table/table.interface';
 import { TableService } from '../../../../shared/components/table/table.service';
 import { AppDialogService } from '../../../../shared/services/app-dialog.service';
+import { ToastService } from '../../../../shared/services/toast.service';
 import { hasActiveAdvancedFilters } from '../../../../shared/utils/advanced-filter.util';
 import { CoursesActions } from '../../../courses/store/courses.actions';
 import { Instructor, InstructorTableRow } from '../../models/instructor.interface';
@@ -45,6 +46,7 @@ export class InstructorsListComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly store = inject(Store);
   private readonly appDialog = inject(AppDialogService);
+  private readonly toast = inject(ToastService);
   private readonly mockDataService = inject(MockDataService);
   private readonly tableService = inject(TableService<InstructorTableRow>);
   private readonly filterService = inject(FilterService);
@@ -190,10 +192,16 @@ export class InstructorsListComponent {
 
         if (instructor) {
           this.store.dispatch(InstructorsActions.updateInstructor({ instructor: result.instructor }));
+          this.toast.success('Instructor updated', {
+            message: `"${result.instructor.name}" was saved successfully.`,
+          });
           return;
         }
 
         this.store.dispatch(InstructorsActions.addInstructor({ instructor: result.instructor }));
+        this.toast.success('Instructor added', {
+          message: `"${result.instructor.name}" was created successfully.`,
+        });
       });
   }
 
@@ -209,6 +217,9 @@ export class InstructorsListComponent {
         confirmSeverity: 'danger',
         onConfirm: () => {
           this.store.dispatch(InstructorsActions.deleteInstructor({ id: instructor.id }));
+          this.toast.success('Instructor deleted', {
+            message: `"${instructor.name}" was removed successfully.`,
+          });
         },
       },
       'Delete Instructor',

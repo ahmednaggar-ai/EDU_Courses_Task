@@ -1,0 +1,25 @@
+<div class="app-toaster" aria-live="polite" aria-relevant="additions">
+  @for (toast of toastService.toasts(); track toast.id) {
+    <div class="app-toast" [class]="'app-toast--' + toast.severity" role="status">
+      <div class="app-toast__icon" aria-hidden="true">
+        <i [class]="iconClass(toast.severity)"></i>
+      </div>
+
+      <div class="app-toast__content">
+        <p class="app-toast__title">{{ toast.title }}</p>
+        @if (toast.message) {
+          <p class="app-toast__message">{{ toast.message }}</p>
+        }
+      </div>
+
+      <button
+        type="button"
+        class="app-toast__close"
+        aria-label="Dismiss notification"
+        (click)="dismiss(toast, $event)"
+      >
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+  }
+</div>

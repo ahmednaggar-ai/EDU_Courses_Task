@@ -20,6 +20,7 @@ import { TableComponent } from '../../../../shared/components/table/table.compon
 import { TableSortEvent } from '../../../../shared/components/table/table.interface';
 import { TableService } from '../../../../shared/components/table/table.service';
 import { AppDialogService } from '../../../../shared/services/app-dialog.service';
+import { ToastService } from '../../../../shared/services/toast.service';
 import { hasActiveAdvancedFilters } from '../../../../shared/utils/advanced-filter.util';
 import { Course } from '../../models/course.interface';
 import { CoursesActions } from '../../store/courses.actions';
@@ -44,6 +45,7 @@ export class CoursesListComponent {
   private readonly store = inject(Store);
   private readonly router = inject(Router);
   private readonly appDialog = inject(AppDialogService);
+  private readonly toast = inject(ToastService);
   private readonly mockDataService = inject(MockDataService);
   private readonly tableService = inject(TableService<Course>);
   private readonly filterService = inject(FilterService);
@@ -233,10 +235,16 @@ export class CoursesListComponent {
 
         if (course) {
           this.store.dispatch(CoursesActions.updateCourse({ course: result.course }));
+          this.toast.success('Course updated', {
+            message: `"${result.course.name}" was saved successfully.`,
+          });
           return;
         }
 
         this.store.dispatch(CoursesActions.addCourse({ course: result.course }));
+        this.toast.success('Course added', {
+          message: `"${result.course.name}" was created successfully.`,
+        });
       });
   }
 
@@ -252,6 +260,9 @@ export class CoursesListComponent {
         confirmSeverity: 'danger',
         onConfirm: () => {
           this.store.dispatch(CoursesActions.deleteCourse({ id: course.id }));
+          this.toast.success('Course deleted', {
+            message: `"${course.name}" was removed successfully.`,
+          });
         },
       },
       'Delete Course',
