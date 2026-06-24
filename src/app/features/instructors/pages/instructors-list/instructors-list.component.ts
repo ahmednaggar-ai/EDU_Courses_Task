@@ -14,7 +14,8 @@ import { TableComponent } from '../../../../shared/components/table/table.compon
 import { TablePageEvent } from '../../../../shared/components/table/table.interface';
 import { TableService } from '../../../../shared/components/table/table.service';
 import { AppDialogService } from '../../../../shared/services/app-dialog.service';
-import { Instructor } from '../../models/instructor.interface';
+import { CoursesActions } from '../../../courses/store/courses.actions';
+import { Instructor, InstructorTableRow } from '../../models/instructor.interface';
 import { InstructorsActions } from '../../store/instructors.actions';
 import {
   selectFilteredInstructorsCount,
@@ -37,7 +38,7 @@ export class InstructorsListComponent {
   private readonly store = inject(Store);
   private readonly appDialog = inject(AppDialogService);
   private readonly mockDataService = inject(MockDataService);
-  private readonly tableService = inject(TableService<Instructor>);
+  private readonly tableService = inject(TableService<InstructorTableRow>);
   private readonly filterService = inject(FilterService);
 
   constructor() {
@@ -46,6 +47,7 @@ export class InstructorsListComponent {
     this.bindStoreToTable();
     this.bindDepartmentOptions();
     this.store.dispatch(InstructorsActions.load());
+    this.store.dispatch(CoursesActions.load());
   }
 
   protected openAddInstructorDialog(): void {

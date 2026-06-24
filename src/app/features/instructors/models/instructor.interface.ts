@@ -5,6 +5,9 @@ export interface Instructor {
   name: string;
   email: string;
   department: string;
-  courses: number;
   status: InstructorStatus;
+}
+
+export interface InstructorTableRow extends Instructor {
+  courses: number;
 }

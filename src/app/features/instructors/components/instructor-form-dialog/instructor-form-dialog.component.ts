@@ -2,7 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { MockDataService } from '../../../../core/services/mock-data.service';
@@ -19,7 +18,7 @@ import {
 
 @Component({
   selector: 'app-instructor-form-dialog',
-  imports: [ReactiveFormsModule, Button, InputText, InputNumber, Select],
+  imports: [ReactiveFormsModule, Button, InputText, Select],
   templateUrl: './instructor-form-dialog.component.html',
   styleUrl: './instructor-form-dialog.component.scss',
 })
@@ -30,13 +29,13 @@ export class InstructorFormDialogComponent implements OnInit {
   private readonly mockDataService = inject(MockDataService);
 
   protected readonly statusOptions = this.mockDataService.getInstructorStatusFormOptions();
+  protected readonly departmentOptions = this.mockDataService.getInstructorDepartmentOptions();
   protected readonly isEdit = !!this.dialogConfig.data?.instructor;
 
   protected readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    department: ['', Validators.required],
-    courses: [null as number | null, [Validators.required, Validators.min(0)]],
+    department: [null as string | null, Validators.required],
     status: [null as InstructorStatus | null, Validators.required],
   });
 
@@ -61,8 +60,7 @@ export class InstructorFormDialogComponent implements OnInit {
       id: existing?.id ?? this.generateInstructorId(),
       name: value.name,
       email: value.email,
-      department: value.department,
-      courses: value.courses!,
+      department: value.department!,
       status: value.status!,
     };
 

@@ -57,6 +57,12 @@ export class MockDataService {
     { label: 'Users', value: 'pi pi-users', previewColor: '#7c3aed' },
   ];
 
+  private readonly instructorDepartments: SelectOption<string>[] = [
+    { label: 'Academic Affairs', value: 'Academic Affairs' },
+    { label: 'Computer Science', value: 'Computer Science' },
+    { label: 'Design', value: 'Design' },
+  ];
+
   getCourseStatuses(): CourseStatusFilterOption[] {
     return this.courseStatuses;
   }
@@ -95,5 +101,9 @@ export class MockDataService {
 
   getCourseIconOptions(): CourseIconOption[] {
     return this.courseIcons;
+  }
+
+  getInstructorDepartmentOptions(): SelectOption<string>[] {
+    return this.instructorDepartments;
   }
 }

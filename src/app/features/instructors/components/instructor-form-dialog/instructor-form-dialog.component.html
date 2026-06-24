@@ -30,11 +30,13 @@
   <div class="entity-form__row">
     <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('department')">
       <label for="instructor-department">Department</label>
-      <input
-        id="instructor-department"
-        pInputText
+      <p-select
+        inputId="instructor-department"
         formControlName="department"
-        placeholder="Department"
+        [options]="departmentOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Select department"
         [class.ng-invalid]="isInvalid('department')"
       />
       @if (fieldError('department'); as error) {
@@ -42,34 +44,21 @@
       }
     </div>
 
-    <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('courses')">
-      <label for="instructor-courses">Courses</label>
-      <p-inputNumber
-        inputId="instructor-courses"
-        formControlName="courses"
-        [min]="0"
-        [class.ng-invalid]="isInvalid('courses')"
+    <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('status')">
+      <label for="instructor-status">Status</label>
+      <p-select
+        inputId="instructor-status"
+        formControlName="status"
+        [options]="statusOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Select status"
+        [class.ng-invalid]="isInvalid('status')"
       />
-      @if (fieldError('courses'); as error) {
+      @if (fieldError('status'); as error) {
         <small class="entity-form__error">{{ error }}</small>
       }
     </div>
-  </div>
-
-  <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('status')">
-    <label for="instructor-status">Status</label>
-    <p-select
-      inputId="instructor-status"
-      formControlName="status"
-      [options]="statusOptions"
-      optionLabel="label"
-      optionValue="value"
-      placeholder="Select status"
-      [class.ng-invalid]="isInvalid('status')"
-    />
-    @if (fieldError('status'); as error) {
-      <small class="entity-form__error">{{ error }}</small>
-    }
   </div>
 
   <div class="entity-form__footer">

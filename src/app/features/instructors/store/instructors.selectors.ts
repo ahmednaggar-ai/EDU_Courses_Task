@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FilterValues } from '../../../shared/components/filters/filters.interface';
-import { Instructor } from '../models/instructor.interface';
+import { selectAllCourses } from '../../courses/store/courses.selectors';
+import { Instructor, InstructorTableRow } from '../models/instructor.interface';
 import { InstructorsState } from './instructors.state';
 
 export const selectInstructorsState = createFeatureSelector<InstructorsState>('instructors');
@@ -56,10 +57,23 @@ function filterInstructors(instructors: Instructor[], values: FilterValues): Ins
   });
 }
 
+function withCourseCounts(instructors: Instructor[], courses: { instructor: string }[]): InstructorTableRow[] {
+  return instructors.map((instructor) => ({
+    ...instructor,
+    courses: courses.filter((course) => course.instructor === instructor.name).length,
+  }));
+}
+
 export const selectFilteredInstructors = createSelector(
   selectAllInstructors,
   selectInstructorsFilters,
   (instructors, filters) => filterInstructors(instructors, filters),
+);
+
+export const selectFilteredInstructorsWithCourseCount = createSelector(
+  selectFilteredInstructors,
+  selectAllCourses,
+  (instructors, courses) => withCourseCounts(instructors, courses),
 );
 
 export const selectFilteredInstructorsCount = createSelector(
@@ -68,7 +82,7 @@ export const selectFilteredInstructorsCount = createSelector(
 );
 
 export const selectInstructorsPage = createSelector(
-  selectFilteredInstructors,
+  selectFilteredInstructorsWithCourseCount,
   selectInstructorsPagination,
   (instructors, { first, rows }) => instructors.slice(first, first + rows),
 );
