@@ -1,0 +1,27 @@
+<div class="confirmation-dialog">
+  <div class="confirmation-dialog__body">
+    @if (data.icon) {
+      <div class="confirmation-dialog__icon" [class]="data.iconClass ?? ''">
+        <i [class]="data.icon"></i>
+      </div>
+    }
+    <p class="confirmation-dialog__message">{{ data.message }}</p>
+    @if (data.detail) {
+      <p class="confirmation-dialog__detail">{{ data.detail }}</p>
+    }
+  </div>
+
+  <div class="confirmation-dialog__footer">
+    <p-button
+      [label]="data.cancelLabel ?? 'Cancel'"
+      severity="secondary"
+      [outlined]="true"
+      (onClick)="onCancel()"
+    />
+    <p-button
+      [label]="data.confirmLabel ?? 'Confirm'"
+      [styleClass]="confirmButtonClass()"
+      (onClick)="onConfirm()"
+    />
+  </div>
+</div>

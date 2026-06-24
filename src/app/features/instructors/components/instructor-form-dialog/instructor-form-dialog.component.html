@@ -1,0 +1,40 @@
+<form class="entity-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="entity-form__field">
+    <label for="instructor-name">Full Name</label>
+    <input id="instructor-name" pInputText formControlName="name" placeholder="Enter instructor name" />
+  </div>
+
+  <div class="entity-form__field">
+    <label for="instructor-email">Email</label>
+    <input id="instructor-email" pInputText formControlName="email" placeholder="name@eduflow.edu" />
+  </div>
+
+  <div class="entity-form__row">
+    <div class="entity-form__field">
+      <label for="instructor-department">Department</label>
+      <input id="instructor-department" pInputText formControlName="department" placeholder="Department" />
+    </div>
+
+    <div class="entity-form__field">
+      <label for="instructor-courses">Courses</label>
+      <p-inputNumber inputId="instructor-courses" formControlName="courses" [min]="0" />
+    </div>
+  </div>
+
+  <div class="entity-form__field">
+    <label for="instructor-status">Status</label>
+    <p-select
+      inputId="instructor-status"
+      formControlName="status"
+      [options]="statusOptions"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Select status"
+    />
+  </div>
+
+  <div class="entity-form__footer">
+    <p-button label="Cancel" severity="secondary" [outlined]="true" type="button" (onClick)="cancel()" />
+    <p-button [label]="isEdit ? 'Save Changes' : 'Add Instructor'" type="submit" />
+  </div>
+</form>

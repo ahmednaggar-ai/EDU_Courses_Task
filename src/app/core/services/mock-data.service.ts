@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CourseCategory, CourseStatus } from '../../features/courses/models/course.interface';
 import { InstructorStatus } from '../../features/instructors/models/instructor.interface';
 import {
   CourseCategoryFilterOption,
@@ -49,5 +50,21 @@ export class MockDataService {
 
   getInstructorStatuses(): SelectOption<InstructorStatus | null>[] {
     return this.instructorStatuses;
+  }
+
+  getCourseStatusFormOptions(): SelectOption<CourseStatus>[] {
+    return this.courseStatuses.filter((option): option is SelectOption<CourseStatus> => option.value !== null);
+  }
+
+  getCourseCategoryFormOptions(): SelectOption<CourseCategory>[] {
+    return this.courseCategories.filter(
+      (option): option is SelectOption<CourseCategory> => option.value !== null,
+    );
+  }
+
+  getInstructorStatusFormOptions(): SelectOption<InstructorStatus>[] {
+    return this.instructorStatuses.filter(
+      (option): option is SelectOption<InstructorStatus> => option.value !== null,
+    );
   }
 }

@@ -12,5 +12,8 @@ export const InstructorsActions = createActionGroup({
     'Apply Filters': props<{ filters: FilterValues }>(),
     'Change Page': props<{ pagination: InstructorsPagination }>(),
     'Request Complete': emptyProps(),
+    'Add Instructor': props<{ instructor: Instructor }>(),
+    'Update Instructor': props<{ instructor: Instructor }>(),
+    'Delete Instructor': props<{ id: string }>(),
   },
 });

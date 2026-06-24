@@ -37,4 +37,18 @@ export const instructorsReducer = createReducer(
     ...state,
     loading: false,
   })),
+  on(InstructorsActions.addInstructor, (state, { instructor }) => ({
+    ...state,
+    instructors: [...state.instructors, instructor],
+  })),
+  on(InstructorsActions.updateInstructor, (state, { instructor }) => ({
+    ...state,
+    instructors: state.instructors.map((item) =>
+      item.id === instructor.id ? instructor : item,
+    ),
+  })),
+  on(InstructorsActions.deleteInstructor, (state, { id }) => ({
+    ...state,
+    instructors: state.instructors.filter((item) => item.id !== id),
+  })),
 );

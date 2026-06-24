@@ -5,12 +5,15 @@ import { Button } from 'primeng/button';
 import { combineLatest } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MockDataService } from '../../../../core/services/mock-data.service';
+import { InstructorFormDialogComponent } from '../../components/instructor-form-dialog/instructor-form-dialog.component';
+import { InstructorFormDialogResult } from '../../components/instructor-form-dialog/instructor-form-dialog.interface';
 import { FilterService } from '../../../../shared/components/filters/filter.service';
 import { FiltersComponent } from '../../../../shared/components/filters/filters.component';
 import { FilterValues } from '../../../../shared/components/filters/filters.interface';
 import { TableComponent } from '../../../../shared/components/table/table.component';
 import { TablePageEvent } from '../../../../shared/components/table/table.interface';
 import { TableService } from '../../../../shared/components/table/table.service';
+import { AppDialogService } from '../../../../shared/services/app-dialog.service';
 import { Instructor } from '../../models/instructor.interface';
 import { InstructorsActions } from '../../store/instructors.actions';
 import {
@@ -32,6 +35,7 @@ import {
 export class InstructorsListComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly store = inject(Store);
+  private readonly appDialog = inject(AppDialogService);
   private readonly mockDataService = inject(MockDataService);
   private readonly tableService = inject(TableService<Instructor>);
   private readonly filterService = inject(FilterService);
@@ -42,6 +46,10 @@ export class InstructorsListComponent {
     this.bindStoreToTable();
     this.bindDepartmentOptions();
     this.store.dispatch(InstructorsActions.load());
+  }
+
+  protected openAddInstructorDialog(): void {
+    this.openInstructorFormDialog();
   }
 
   private initTable(): void {
@@ -70,25 +78,59 @@ export class InstructorsListComponent {
       {
         label: 'Edit',
         icon: 'pi pi-pencil',
-        command: (instructor) => this.onEditInstructor(instructor),
+        command: (instructor) => this.openInstructorFormDialog(instructor),
       },
       {
         label: 'Delete',
         icon: 'pi pi-trash',
         styleClass: 'app-table__action-item--danger',
-        command: (instructor) => this.onDeleteInstructor(instructor),
+        command: (instructor) => this.confirmDeleteInstructor(instructor),
       },
     ]);
 
     this.tableService.setPageChangeHandler((event) => this.onPageChange(event));
   }
 
-  private onEditInstructor(instructor: Instructor): void {
-    console.log('Edit instructor:', instructor);
+  private openInstructorFormDialog(instructor?: Instructor): void {
+    const ref = this.appDialog.open(InstructorFormDialogComponent, {
+      header: instructor ? 'Edit Instructor' : 'Add Instructor',
+      width: '32rem',
+      styleClass: 'app-dialog',
+      data: { instructor },
+    });
+
+    ref?.onClose
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((result: InstructorFormDialogResult | undefined) => {
+        if (!result?.instructor) {
+          return;
+        }
+
+        if (instructor) {
+          this.store.dispatch(InstructorsActions.updateInstructor({ instructor: result.instructor }));
+          return;
+        }
+
+        this.store.dispatch(InstructorsActions.addInstructor({ instructor: result.instructor }));
+      });
   }
 
-  private onDeleteInstructor(instructor: Instructor): void {
-    console.log('Delete instructor:', instructor);
+  private confirmDeleteInstructor(instructor: Instructor): void {
+    this.appDialog.confirm(
+      {
+        message: `Delete "${instructor.name}"?`,
+        detail: 'This instructor profile will be permanently removed from the system.',
+        icon: 'pi pi-trash',
+        iconClass: 'confirmation-dialog__icon--danger',
+        confirmLabel: 'Delete',
+        cancelLabel: 'Cancel',
+        confirmSeverity: 'danger',
+        onConfirm: () => {
+          this.store.dispatch(InstructorsActions.deleteInstructor({ id: instructor.id }));
+        },
+      },
+      'Delete Instructor',
+    );
   }
 
   private initFilters(): void {

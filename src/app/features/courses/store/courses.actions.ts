@@ -10,5 +10,8 @@ export const CoursesActions = createActionGroup({
     'Load Failure': props<{ error: string }>(),
     'Apply Filters': props<{ filters: FilterValues }>(),
     'Apply Filters Complete': emptyProps(),
+    'Add Course': props<{ course: Course }>(),
+    'Update Course': props<{ course: Course }>(),
+    'Delete Course': props<{ id: string }>(),
   },
 });

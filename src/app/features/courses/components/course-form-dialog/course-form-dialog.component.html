@@ -1,0 +1,72 @@
+<form class="entity-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="entity-form__field">
+    <label for="course-name">Course Name</label>
+    <input id="course-name" pInputText formControlName="name" placeholder="Enter course name" />
+  </div>
+
+  <div class="entity-form__field">
+    <label for="course-instructor">Instructor</label>
+    <input id="course-instructor" pInputText formControlName="instructor" placeholder="Instructor name" />
+  </div>
+
+  <div class="entity-form__row">
+    <div class="entity-form__field">
+      <label for="course-category">Category</label>
+      <p-select
+        inputId="course-category"
+        formControlName="category"
+        [options]="categoryOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Select category"
+      />
+    </div>
+
+    <div class="entity-form__field">
+      <label for="course-status">Status</label>
+      <p-select
+        inputId="course-status"
+        formControlName="status"
+        [options]="statusOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Select status"
+      />
+    </div>
+  </div>
+
+  <div class="entity-form__row">
+    <div class="entity-form__field">
+      <label for="course-duration">Duration</label>
+      <input id="course-duration" pInputText formControlName="duration" placeholder="e.g. 12 Weeks" />
+    </div>
+
+    <div class="entity-form__field">
+      <label for="course-price">Price</label>
+      <p-inputNumber
+        inputId="course-price"
+        formControlName="price"
+        mode="currency"
+        currency="USD"
+        locale="en-US"
+      />
+    </div>
+  </div>
+
+  <div class="entity-form__row">
+    <div class="entity-form__field">
+      <label for="course-icon">Icon Class</label>
+      <input id="course-icon" pInputText formControlName="icon" placeholder="pi pi-code" />
+    </div>
+
+    <div class="entity-form__field">
+      <label for="course-icon-color">Icon Color</label>
+      <input id="course-icon-color" pInputText formControlName="iconColor" placeholder="#2563eb" />
+    </div>
+  </div>
+
+  <div class="entity-form__footer">
+    <p-button label="Cancel" severity="secondary" [outlined]="true" type="button" (onClick)="cancel()" />
+    <p-button [label]="isEdit ? 'Save Changes' : 'Add Course'" type="submit" />
+  </div>
+</form>

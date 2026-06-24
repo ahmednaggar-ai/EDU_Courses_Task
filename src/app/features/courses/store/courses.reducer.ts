@@ -30,4 +30,16 @@ export const coursesReducer = createReducer(
     ...state,
     loading: false,
   })),
+  on(CoursesActions.addCourse, (state, { course }) => ({
+    ...state,
+    courses: [...state.courses, course],
+  })),
+  on(CoursesActions.updateCourse, (state, { course }) => ({
+    ...state,
+    courses: state.courses.map((item) => (item.id === course.id ? course : item)),
+  })),
+  on(CoursesActions.deleteCourse, (state, { id }) => ({
+    ...state,
+    courses: state.courses.filter((item) => item.id !== id),
+  })),
 );
