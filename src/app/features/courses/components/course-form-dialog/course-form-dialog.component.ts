@@ -6,6 +6,11 @@ import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { MockDataService } from '../../../../core/services/mock-data.service';
+import {
+  getControlErrorMessage,
+  getFormControl,
+  isControlInvalid,
+} from '../../../../shared/utils/form-validation.util';
 import { Course, CourseCategory, CourseStatus } from '../../models/course.interface';
 import { CourseFormDialogData, CourseFormDialogResult } from './course-form-dialog.interface';
 
@@ -28,12 +33,12 @@ export class CourseFormDialogComponent implements OnInit {
   protected readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     instructor: ['', Validators.required],
-    category: ['FRONTEND' as CourseCategory, Validators.required],
+    category: [null as CourseCategory | null, Validators.required],
     duration: ['', Validators.required],
-    price: [0, [Validators.required, Validators.min(0)]],
-    status: ['Active' as CourseStatus, Validators.required],
-    icon: ['pi pi-book', Validators.required],
-    iconColor: ['#2563eb', Validators.required],
+    price: [null as number | null, [Validators.required, Validators.min(0)]],
+    status: [null as CourseStatus | null, Validators.required],
+    icon: ['', Validators.required],
+    iconColor: ['', Validators.required],
   });
 
   ngOnInit(): void {
@@ -57,16 +62,24 @@ export class CourseFormDialogComponent implements OnInit {
       id: existing?.id ?? this.generateCourseId(),
       name: value.name,
       instructor: value.instructor,
-      category: value.category,
+      category: value.category!,
       duration: value.duration,
-      price: value.price,
-      status: value.status,
+      price: value.price!,
+      status: value.status!,
       icon: value.icon,
       iconColor: value.iconColor,
     };
 
     const result: CourseFormDialogResult = { course };
     this.dialogRef.close(result);
+  }
+
+  protected fieldError(fieldName: string): string | null {
+    return getControlErrorMessage(getFormControl(this.form, fieldName));
+  }
+
+  protected isInvalid(fieldName: string): boolean {
+    return isControlInvalid(getFormControl(this.form, fieldName));
   }
 
   protected cancel(): void {

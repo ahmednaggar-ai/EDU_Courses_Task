@@ -6,6 +6,11 @@ import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { MockDataService } from '../../../../core/services/mock-data.service';
+import {
+  getControlErrorMessage,
+  getFormControl,
+  isControlInvalid,
+} from '../../../../shared/utils/form-validation.util';
 import { Instructor, InstructorStatus } from '../../models/instructor.interface';
 import {
   InstructorFormDialogData,
@@ -31,8 +36,8 @@ export class InstructorFormDialogComponent implements OnInit {
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     department: ['', Validators.required],
-    courses: [0, [Validators.required, Validators.min(0)]],
-    status: ['Active' as InstructorStatus, Validators.required],
+    courses: [null as number | null, [Validators.required, Validators.min(0)]],
+    status: [null as InstructorStatus | null, Validators.required],
   });
 
   ngOnInit(): void {
@@ -57,12 +62,20 @@ export class InstructorFormDialogComponent implements OnInit {
       name: value.name,
       email: value.email,
       department: value.department,
-      courses: value.courses,
-      status: value.status,
+      courses: value.courses!,
+      status: value.status!,
     };
 
     const result: InstructorFormDialogResult = { instructor };
     this.dialogRef.close(result);
+  }
+
+  protected fieldError(fieldName: string): string | null {
+    return getControlErrorMessage(getFormControl(this.form, fieldName));
+  }
+
+  protected isInvalid(fieldName: string): boolean {
+    return isControlInvalid(getFormControl(this.form, fieldName));
   }
 
   protected cancel(): void {

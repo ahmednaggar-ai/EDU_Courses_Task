@@ -1,27 +1,62 @@
-<form class="entity-form" [formGroup]="form" (ngSubmit)="submit()">
-  <div class="entity-form__field">
+<form class="entity-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('name')">
     <label for="instructor-name">Full Name</label>
-    <input id="instructor-name" pInputText formControlName="name" placeholder="Enter instructor name" />
+    <input
+      id="instructor-name"
+      pInputText
+      formControlName="name"
+      placeholder="Enter instructor name"
+      [class.ng-invalid]="isInvalid('name')"
+    />
+    @if (fieldError('name'); as error) {
+      <small class="entity-form__error">{{ error }}</small>
+    }
   </div>
 
-  <div class="entity-form__field">
+  <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('email')">
     <label for="instructor-email">Email</label>
-    <input id="instructor-email" pInputText formControlName="email" placeholder="name@eduflow.edu" />
+    <input
+      id="instructor-email"
+      pInputText
+      formControlName="email"
+      placeholder="name@eduflow.edu"
+      [class.ng-invalid]="isInvalid('email')"
+    />
+    @if (fieldError('email'); as error) {
+      <small class="entity-form__error">{{ error }}</small>
+    }
   </div>
 
   <div class="entity-form__row">
-    <div class="entity-form__field">
+    <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('department')">
       <label for="instructor-department">Department</label>
-      <input id="instructor-department" pInputText formControlName="department" placeholder="Department" />
+      <input
+        id="instructor-department"
+        pInputText
+        formControlName="department"
+        placeholder="Department"
+        [class.ng-invalid]="isInvalid('department')"
+      />
+      @if (fieldError('department'); as error) {
+        <small class="entity-form__error">{{ error }}</small>
+      }
     </div>
 
-    <div class="entity-form__field">
+    <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('courses')">
       <label for="instructor-courses">Courses</label>
-      <p-inputNumber inputId="instructor-courses" formControlName="courses" [min]="0" />
+      <p-inputNumber
+        inputId="instructor-courses"
+        formControlName="courses"
+        [min]="0"
+        [class.ng-invalid]="isInvalid('courses')"
+      />
+      @if (fieldError('courses'); as error) {
+        <small class="entity-form__error">{{ error }}</small>
+      }
     </div>
   </div>
 
-  <div class="entity-form__field">
+  <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('status')">
     <label for="instructor-status">Status</label>
     <p-select
       inputId="instructor-status"
@@ -30,7 +65,11 @@
       optionLabel="label"
       optionValue="value"
       placeholder="Select status"
+      [class.ng-invalid]="isInvalid('status')"
     />
+    @if (fieldError('status'); as error) {
+      <small class="entity-form__error">{{ error }}</small>
+    }
   </div>
 
   <div class="entity-form__footer">

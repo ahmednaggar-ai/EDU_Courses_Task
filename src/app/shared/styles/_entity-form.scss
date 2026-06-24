@@ -26,6 +26,22 @@
   .p-inputnumber {
     width: 100%;
   }
+
+  &--invalid label {
+    color: #ef4444;
+  }
+}
+
+.entity-form__error {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #ef4444;
+}
+
+.entity-form__field--invalid {
+  :is(input, .p-inputtext, .p-select, .p-inputnumber).ng-invalid {
+    border-color: #ef4444;
+  }
 }
 
 .entity-form__footer {

@@ -1,16 +1,34 @@
-<form class="entity-form" [formGroup]="form" (ngSubmit)="submit()">
-  <div class="entity-form__field">
+<form class="entity-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('name')">
     <label for="course-name">Course Name</label>
-    <input id="course-name" pInputText formControlName="name" placeholder="Enter course name" />
+    <input
+      id="course-name"
+      pInputText
+      formControlName="name"
+      placeholder="Enter course name"
+      [class.ng-invalid]="isInvalid('name')"
+    />
+    @if (fieldError('name'); as error) {
+      <small class="entity-form__error">{{ error }}</small>
+    }
   </div>
 
-  <div class="entity-form__field">
+  <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('instructor')">
     <label for="course-instructor">Instructor</label>
-    <input id="course-instructor" pInputText formControlName="instructor" placeholder="Instructor name" />
+    <input
+      id="course-instructor"
+      pInputText
+      formControlName="instructor"
+      placeholder="Instructor name"
+      [class.ng-invalid]="isInvalid('instructor')"
+    />
+    @if (fieldError('instructor'); as error) {
+      <small class="entity-form__error">{{ error }}</small>
+    }
   </div>
 
   <div class="entity-form__row">
-    <div class="entity-form__field">
+    <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('category')">
       <label for="course-category">Category</label>
       <p-select
         inputId="course-category"
@@ -19,10 +37,14 @@
         optionLabel="label"
         optionValue="value"
         placeholder="Select category"
+        [class.ng-invalid]="isInvalid('category')"
       />
+      @if (fieldError('category'); as error) {
+        <small class="entity-form__error">{{ error }}</small>
+      }
     </div>
 
-    <div class="entity-form__field">
+    <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('status')">
       <label for="course-status">Status</label>
       <p-select
         inputId="course-status"
@@ -31,17 +53,30 @@
         optionLabel="label"
         optionValue="value"
         placeholder="Select status"
+        [class.ng-invalid]="isInvalid('status')"
       />
+      @if (fieldError('status'); as error) {
+        <small class="entity-form__error">{{ error }}</small>
+      }
     </div>
   </div>
 
   <div class="entity-form__row">
-    <div class="entity-form__field">
+    <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('duration')">
       <label for="course-duration">Duration</label>
-      <input id="course-duration" pInputText formControlName="duration" placeholder="e.g. 12 Weeks" />
+      <input
+        id="course-duration"
+        pInputText
+        formControlName="duration"
+        placeholder="e.g. 12 Weeks"
+        [class.ng-invalid]="isInvalid('duration')"
+      />
+      @if (fieldError('duration'); as error) {
+        <small class="entity-form__error">{{ error }}</small>
+      }
     </div>
 
-    <div class="entity-form__field">
+    <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('price')">
       <label for="course-price">Price</label>
       <p-inputNumber
         inputId="course-price"
@@ -49,19 +84,41 @@
         mode="currency"
         currency="USD"
         locale="en-US"
+        [class.ng-invalid]="isInvalid('price')"
       />
+      @if (fieldError('price'); as error) {
+        <small class="entity-form__error">{{ error }}</small>
+      }
     </div>
   </div>
 
   <div class="entity-form__row">
-    <div class="entity-form__field">
+    <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('icon')">
       <label for="course-icon">Icon Class</label>
-      <input id="course-icon" pInputText formControlName="icon" placeholder="pi pi-code" />
+      <input
+        id="course-icon"
+        pInputText
+        formControlName="icon"
+        placeholder="pi pi-code"
+        [class.ng-invalid]="isInvalid('icon')"
+      />
+      @if (fieldError('icon'); as error) {
+        <small class="entity-form__error">{{ error }}</small>
+      }
     </div>
 
-    <div class="entity-form__field">
+    <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('iconColor')">
       <label for="course-icon-color">Icon Color</label>
-      <input id="course-icon-color" pInputText formControlName="iconColor" placeholder="#2563eb" />
+      <input
+        id="course-icon-color"
+        pInputText
+        formControlName="iconColor"
+        placeholder="#2563eb"
+        [class.ng-invalid]="isInvalid('iconColor')"
+      />
+      @if (fieldError('iconColor'); as error) {
+        <small class="entity-form__error">{{ error }}</small>
+      }
     </div>
   </div>
 
