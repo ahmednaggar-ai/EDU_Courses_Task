@@ -1,5 +1,11 @@
 @use '../../../../shared/styles/entity-form';
 
+.entity-form__optional {
+  font-weight: 400;
+  color: var(--edu-text-muted);
+  font-size: 0.8125rem;
+}
+
 .course-form__icon-option {
   display: flex;
   align-items: center;

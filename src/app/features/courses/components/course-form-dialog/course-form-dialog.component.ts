@@ -4,10 +4,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Button } from 'primeng/button';
-import { ColorPicker } from 'primeng/colorpicker';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
+import { Textarea } from 'primeng/textarea';
 import { map, take } from 'rxjs/operators';
 import { MockDataService } from '../../../../core/services/mock-data.service';
 import { SelectOption } from '../../../../shared/interfaces/select-option.interface';
@@ -23,7 +23,7 @@ import { CourseFormDialogData, CourseFormDialogResult } from './course-form-dial
 
 @Component({
   selector: 'app-course-form-dialog',
-  imports: [ReactiveFormsModule, Button, InputText, Select, ColorPicker],
+  imports: [ReactiveFormsModule, Button, InputText, Select, Textarea],
   templateUrl: './course-form-dialog.component.html',
   styleUrl: './course-form-dialog.component.scss',
 })
@@ -37,8 +37,6 @@ export class CourseFormDialogComponent implements OnInit {
 
   protected readonly statusOptions = this.mockDataService.getCourseStatusFormOptions();
   protected readonly categoryOptions = this.mockDataService.getCourseCategoryFormOptions();
-  protected readonly durationOptions = this.mockDataService.getCourseDurationOptions();
-  protected readonly iconOptions = this.mockDataService.getCourseIconOptions();
   protected readonly instructorOptions = toSignal(
     this.store.select(selectAllInstructors).pipe(
       map((instructors) =>
@@ -55,21 +53,28 @@ export class CourseFormDialogComponent implements OnInit {
   protected readonly isEdit = !!this.dialogConfig.data?.course;
 
   protected readonly form = this.fb.nonNullable.group({
-    name: ['', Validators.required],
+    name: ['', [Validators.required, Validators.minLength(3)]],
     instructor: [null as string | null, Validators.required],
     category: [null as CourseCategory | null, Validators.required],
-    duration: [null as string | null, Validators.required],
+    duration: [null as number | null, [Validators.required, Validators.min(1)]],
     price: [0, [Validators.required, Validators.min(0)]],
     status: [null as CourseStatus | null, Validators.required],
-    icon: [null as string | null, Validators.required],
-    iconColor: ['#2563eb', Validators.required],
+    description: ['', Validators.maxLength(500)],
   });
 
   ngOnInit(): void {
     const course = this.dialogConfig.data?.course;
 
     if (course) {
-      this.form.patchValue(course);
+      this.form.patchValue({
+        name: course.name,
+        instructor: course.instructor,
+        category: course.category,
+        duration: course.duration,
+        price: course.price,
+        status: course.status,
+        description: course.description ?? '',
+      });
     }
 
     this.store
@@ -84,10 +89,6 @@ export class CourseFormDialogComponent implements OnInit {
           this.store.dispatch(InstructorsActions.load());
         }
       });
-
-    this.form.controls.icon.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((icon) => this.applyIconColor(icon));
   }
 
   protected formatPrice(value: number | null | undefined): string {
@@ -105,16 +106,15 @@ export class CourseFormDialogComponent implements OnInit {
     input.value = this.formatPrice(numeric);
   }
 
-  private applyIconColor(icon: string | null): void {
-    if (!icon) {
-      return;
-    }
+  protected onDurationInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const digits = input.value.replace(/[^\d]/g, '');
+    const numeric = digits ? Number(digits) : null;
 
-    const selectedIcon = this.iconOptions.find((option) => option.value === icon);
-
-    if (selectedIcon?.previewColor && !this.isEdit) {
-      this.form.controls.iconColor.setValue(selectedIcon.previewColor);
-    }
+    this.form.controls.duration.setValue(numeric);
+    this.form.controls.duration.markAsTouched();
+    this.form.controls.duration.updateValueAndValidity();
+    input.value = digits;
   }
 
   protected submit(): void {
@@ -125,17 +125,20 @@ export class CourseFormDialogComponent implements OnInit {
 
     const value = this.form.getRawValue();
     const existing = this.dialogConfig.data?.course;
+    const iconDefaults = this.mockDataService.getDefaultCourseIcon(value.category!);
 
     const course: Course = {
       id: existing?.id ?? this.generateCourseId(),
-      name: value.name,
+      name: value.name.trim(),
       instructor: value.instructor!,
       category: value.category!,
       duration: value.duration!,
       price: value.price,
       status: value.status!,
-      icon: value.icon!,
-      iconColor: value.iconColor,
+      description: value.description.trim() || undefined,
+      createdDate: existing?.createdDate ?? this.todayIsoDate(),
+      icon: existing?.icon ?? iconDefaults.icon,
+      iconColor: existing?.iconColor ?? iconDefaults.iconColor,
     };
 
     const result: CourseFormDialogResult = { course };
@@ -156,5 +159,9 @@ export class CourseFormDialogComponent implements OnInit {
 
   private generateCourseId(): string {
     return `CRS-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`;
+  }
+
+  private todayIsoDate(): string {
+    return new Date().toISOString().split('T')[0];
   }
 }

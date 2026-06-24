@@ -75,3 +75,8 @@ export const selectSortedFilteredCourses = createSelector(
   selectCoursesSort,
   (courses, sort) => sortItems(courses, sort),
 );
+
+export const selectCourseById = (courseId: string) =>
+  createSelector(selectAllCourses, (courses) =>
+    courses.find((course) => course.id === courseId) ?? null,
+  );

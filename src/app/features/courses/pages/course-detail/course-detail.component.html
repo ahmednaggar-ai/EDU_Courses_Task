@@ -1,0 +1,92 @@
+<div class="course-detail">
+  <div class="course-detail__header">
+    <p-button
+      label="Back"
+      icon="pi pi-arrow-left"
+      severity="secondary"
+      [outlined]="true"
+      (onClick)="goBack()"
+    />
+  </div>
+
+  @if (loading()) {
+    <div class="course-detail__card course-detail__card--loading">
+      <p>Loading course details...</p>
+    </div>
+  } @else if (course(); as course) {
+    <div class="course-detail__card">
+      <div class="course-detail__hero">
+        <div
+          class="course-detail__icon"
+          [style.background]="course.iconColor + '20'"
+          [style.color]="course.iconColor"
+        >
+          <i [class]="course.icon"></i>
+        </div>
+        <div>
+          <h1>{{ course.name }}</h1>
+          <p class="course-detail__id">ID: {{ course.id }}</p>
+        </div>
+      </div>
+
+      <dl class="course-detail__grid">
+        <div class="course-detail__item">
+          <dt>Course Name</dt>
+          <dd>{{ course.name }}</dd>
+        </div>
+
+        <div class="course-detail__item">
+          <dt>Instructor</dt>
+          <dd>{{ course.instructor }}</dd>
+        </div>
+
+        <div class="course-detail__item">
+          <dt>Category</dt>
+          <dd>
+            <p-tag
+              [value]="categoryLabel(course.category)"
+              [severity]="$any(categorySeverity(course.category))"
+            />
+          </dd>
+        </div>
+
+        <div class="course-detail__item">
+          <dt>Duration</dt>
+          <dd>{{ course.duration }} Hours</dd>
+        </div>
+
+        <div class="course-detail__item">
+          <dt>Price</dt>
+          <dd>{{ course.price | currency }}</dd>
+        </div>
+
+        <div class="course-detail__item">
+          <dt>Status</dt>
+          <dd>
+            <span class="course-detail__status">
+              <span class="course-detail__status-dot" [class]="statusClass(course.status)"></span>
+              {{ course.status }}
+            </span>
+          </dd>
+        </div>
+
+        <div class="course-detail__item">
+          <dt>Created Date</dt>
+          <dd>{{ course.createdDate | date: 'mediumDate' }}</dd>
+        </div>
+
+        <div class="course-detail__item course-detail__item--full">
+          <dt>Description</dt>
+          <dd>{{ course.description || 'No description provided.' }}</dd>
+        </div>
+      </dl>
+    </div>
+  } @else {
+    <div class="course-detail__card course-detail__card--empty">
+      <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
+      <h2>Course not found</h2>
+      <p>The course you are looking for does not exist or was removed.</p>
+      <p-button label="Back to Courses" icon="pi pi-arrow-left" (onClick)="goBack()" />
+    </div>
+  }
+</div>

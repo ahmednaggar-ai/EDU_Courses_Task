@@ -1,5 +1,6 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Button } from 'primeng/button';
 import { combineLatest } from 'rxjs';
@@ -41,6 +42,7 @@ import { CourseStat } from './courses-list.interface';
 export class CoursesListComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly store = inject(Store);
+  private readonly router = inject(Router);
   private readonly appDialog = inject(AppDialogService);
   private readonly mockDataService = inject(MockDataService);
   private readonly tableService = inject(TableService<Course>);
@@ -62,7 +64,7 @@ export class CoursesListComponent {
       type: 'select',
       options: this.mockDataService.getCourseCategoryFormOptions(),
     },
-    { key: 'duration', label: 'Duration', type: 'text' },
+    { key: 'duration', label: 'Duration (Hours)', type: 'number' },
     { key: 'price', label: 'Price', type: 'number' },
     {
       key: 'status',
@@ -167,9 +169,17 @@ export class CoursesListComponent {
     this.tableService.setCellHandlers({
       tagSeverity: (row) => categorySeverityMap[row.category],
       statusClass: (row) => `status-dot--${row.status.toLowerCase()}`,
+      formatValue: (row, field) =>
+        field === 'duration' ? `${row.duration} Hours` : undefined,
+      courseNameClick: (course) => this.viewCourse(course),
     });
 
     this.tableService.setRowActions([
+      {
+        label: 'View',
+        icon: 'pi pi-eye',
+        command: (course) => this.viewCourse(course),
+      },
       {
         label: 'Edit',
         icon: 'pi pi-pencil',
@@ -184,6 +194,10 @@ export class CoursesListComponent {
     ]);
 
     this.tableService.setSortChangeHandler((event) => this.onSort(event));
+  }
+
+  private viewCourse(course: Course): void {
+    this.router.navigate(['/courses', course.id]);
   }
 
   private onSort(event: TableSortEvent): void {

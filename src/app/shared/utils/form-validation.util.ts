@@ -14,7 +14,20 @@ export function getControlErrorMessage(control: AbstractControl | null): string 
   }
 
   if (control.errors['min']) {
-    return `Minimum value is ${control.errors['min'].min}.`;
+    const min = control.errors['min'].min;
+    return min > 0 ? `Value must be greater than 0.` : `Minimum value is ${min}.`;
+  }
+
+  if (control.errors['minlength']) {
+    return `Minimum ${control.errors['minlength'].requiredLength} characters required.`;
+  }
+
+  if (control.errors['maxlength']) {
+    return `Maximum ${control.errors['maxlength'].requiredLength} characters allowed.`;
+  }
+
+  if (control.errors['pattern']) {
+    return 'Numbers only.';
   }
 
   return 'Invalid value.';

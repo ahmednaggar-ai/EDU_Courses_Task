@@ -55,6 +55,23 @@
   font-size: 0.875rem;
 }
 
+.app-table__course-title-link {
+  display: inline;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--edu-blue);
+  cursor: pointer;
+  text-align: left;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .app-table__course-id,
 .app-table__instructor-id {
   font-size: 0.75rem;

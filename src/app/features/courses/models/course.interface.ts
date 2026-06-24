@@ -7,9 +7,11 @@ export interface Course {
   name: string;
   instructor: string;
   category: CourseCategory;
-  duration: string;
+  duration: number;
   price: number;
   status: CourseStatus;
+  description?: string;
+  createdDate: string;
   icon: string;
   iconColor: string;
 }

@@ -66,6 +66,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'courses/:id',
+        loadComponent: () =>
+          import('./features/courses/pages/course-detail/course-detail.component').then(
+            (m) => m.CourseDetailComponent,
+          ),
+      },
+      {
         path: 'instructors',
         loadComponent: () =>
           import('./features/instructors/pages/instructors-list/instructors-list.component').then(

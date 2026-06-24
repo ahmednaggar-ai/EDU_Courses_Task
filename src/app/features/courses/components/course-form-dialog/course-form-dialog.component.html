@@ -14,7 +14,7 @@
   </div>
 
   <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('instructor')">
-    <label for="course-instructor">Instructor</label>
+    <label for="course-instructor">Instructor Name</label>
     <p-select
       inputId="course-instructor"
       formControlName="instructor"
@@ -67,14 +67,15 @@
 
   <div class="entity-form__row">
     <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('duration')">
-      <label for="course-duration">Duration</label>
-      <p-select
-        inputId="course-duration"
-        formControlName="duration"
-        [options]="durationOptions"
-        optionLabel="label"
-        optionValue="value"
-        placeholder="Select duration"
+      <label for="course-duration">Duration in Hours</label>
+      <input
+        id="course-duration"
+        pInputText
+        type="text"
+        inputmode="numeric"
+        [value]="form.controls.duration.value ?? ''"
+        placeholder="Enter hours"
+        (input)="onDurationInput($event)"
         [class.ng-invalid]="isInvalid('duration')"
       />
       @if (fieldError('duration'); as error) {
@@ -100,55 +101,19 @@
     </div>
   </div>
 
-  <div class="entity-form__row">
-    <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('icon')">
-      <label for="course-icon">Icon Class</label>
-      <p-select
-        inputId="course-icon"
-        formControlName="icon"
-        [options]="iconOptions"
-        optionLabel="label"
-        optionValue="value"
-        placeholder="Select icon"
-        [class.ng-invalid]="isInvalid('icon')"
-      >
-        <ng-template let-option pTemplate="item">
-          <div class="course-form__icon-option">
-            <i [class]="option.value"></i>
-            <span>{{ option.label }}</span>
-          </div>
-        </ng-template>
-        <ng-template let-option pTemplate="selectedItem">
-          <div class="course-form__icon-option">
-            <i [class]="option.value"></i>
-            <span>{{ option.label }}</span>
-          </div>
-        </ng-template>
-      </p-select>
-      @if (fieldError('icon'); as error) {
-        <small class="entity-form__error">{{ error }}</small>
-      }
-    </div>
-
-    <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('iconColor')">
-      <label for="course-icon-color">Icon Color</label>
-      <div class="course-form__color-field">
-        <p-colorPicker
-          inputId="course-icon-color"
-          formControlName="iconColor"
-          format="hex"
-        />
-        <input
-          pInputText
-          formControlName="iconColor"
-          placeholder="#2563eb"
-          [class.ng-invalid]="isInvalid('iconColor')"
-        />
-      </div>
-      @if (fieldError('iconColor'); as error) {
-        <small class="entity-form__error">{{ error }}</small>
-      }
-    </div>
+  <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('description')">
+    <label for="course-description">Description <span class="entity-form__optional">(Optional)</span></label>
+    <textarea
+      id="course-description"
+      pTextarea
+      formControlName="description"
+      rows="4"
+      placeholder="Enter course description"
+      [class.ng-invalid]="isInvalid('description')"
+    ></textarea>
+    @if (fieldError('description'); as error) {
+      <small class="entity-form__error">{{ error }}</small>
+    }
   </div>
 
   <div class="entity-form__footer">

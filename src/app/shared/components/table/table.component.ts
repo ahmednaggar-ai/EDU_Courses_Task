@@ -36,6 +36,20 @@ export class TableComponent {
     return this.tableService.cellHandlers().statusClass?.(row, field) ?? '';
   }
 
+  protected displayValue(row: unknown, column: TableColumn): unknown {
+    const formatted = this.tableService.cellHandlers().formatValue?.(row, column.field);
+    if (formatted !== undefined && formatted !== null) {
+      return formatted;
+    }
+
+    return this.tableService.getFieldValue(row, column.field);
+  }
+
+  protected onCourseNameClick(event: Event, row: unknown): void {
+    event.stopPropagation();
+    this.tableService.cellHandlers().courseNameClick?.(row);
+  }
+
   protected openActionMenu(event: Event, row: unknown): void {
     event.stopPropagation();
 

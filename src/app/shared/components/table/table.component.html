@@ -64,7 +64,13 @@
                         <i [class]="asRecord(row)['icon']"></i>
                       </div>
                       <div>
-                        <div class="app-table__course-title">{{ asRecord(row)['name'] }}</div>
+                        <button
+                          type="button"
+                          class="app-table__course-title-link"
+                          (click)="onCourseNameClick($event, row)"
+                        >
+                          {{ asRecord(row)['name'] }}
+                        </button>
                         <div class="app-table__course-id">ID: {{ asRecord(row)['id'] }}</div>
                       </div>
                     </div>
@@ -111,7 +117,7 @@
                     </button>
                   }
                   @default {
-                    {{ tableService.getFieldValue(row, column.field) }}
+                    {{ displayValue(row, column) }}
                   }
                 }
               </td>

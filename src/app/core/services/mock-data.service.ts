@@ -103,6 +103,21 @@ export class MockDataService {
     return this.courseIcons;
   }
 
+  getDefaultCourseIcon(category: CourseCategory): { icon: string; iconColor: string } {
+    const categoryIconMap: Record<CourseCategory, CourseIconOption> = {
+      FRONTEND: this.courseIcons[0],
+      DESIGN: this.courseIcons[1],
+      BACKEND: this.courseIcons[2],
+    };
+
+    const selected = categoryIconMap[category] ?? this.courseIcons[0];
+
+    return {
+      icon: selected.value,
+      iconColor: selected.previewColor ?? '#2563eb',
+    };
+  }
+
   getInstructorDepartmentOptions(): SelectOption<string>[] {
     return this.instructorDepartments;
   }

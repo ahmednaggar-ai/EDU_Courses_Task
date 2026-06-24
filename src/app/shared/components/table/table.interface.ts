@@ -59,4 +59,6 @@ export interface TableRowAction<T = unknown> {
 export interface TableCellHandlers<T = unknown> {
   tagSeverity?: (row: T, field: string) => string;
   statusClass?: (row: T, field: string) => string;
+  formatValue?: (row: T, field: string) => string | null | undefined;
+  courseNameClick?: (row: T) => void;
 }
