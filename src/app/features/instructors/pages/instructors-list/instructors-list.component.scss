@@ -63,3 +63,27 @@
     display: block;
   }
 }
+
+@media (max-width: 768px) {
+  .instructors-page {
+    &__header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__actions {
+      width: 100%;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+  }
+
+  :host ::ng-deep .instructors-page__header .p-button {
+    width: 100%;
+  }
+}

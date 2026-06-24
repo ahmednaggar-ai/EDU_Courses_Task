@@ -3,10 +3,15 @@
   border: 1px solid var(--edu-border);
   border-radius: 0.75rem;
   overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 :host ::ng-deep {
   .app-table {
+    .p-datatable-table {
+      min-width: 56rem;
+    }
     .p-datatable-thead > tr > th {
       background: var(--edu-input-bg);
       color: var(--edu-text-muted);

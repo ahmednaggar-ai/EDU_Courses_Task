@@ -161,5 +161,26 @@
     &__brand {
       display: none;
     }
+
+    &__form-panel {
+      padding: 1.5rem 1rem;
+      min-height: 100dvh;
+    }
+
+    &__form-header h2 {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-page {
+    &__form-panel {
+      padding: 1rem 0.75rem;
+    }
+
+    &__form-top {
+      margin-bottom: 1.5rem;
+    }
   }
 }

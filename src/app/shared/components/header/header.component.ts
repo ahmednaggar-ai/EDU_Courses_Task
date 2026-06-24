@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { InputText } from 'primeng/inputtext';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
+import { LayoutService } from '../../../core/services/layout.service';
 import { selectCurrentUser } from '../../../features/auth/store/auth.selectors';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 
@@ -16,6 +17,7 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 })
 export class HeaderComponent {
   private readonly store = inject(Store);
+  protected readonly layout = inject(LayoutService);
 
   protected searchQuery = '';
 

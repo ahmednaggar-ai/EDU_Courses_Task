@@ -200,11 +200,38 @@
 }
 
 @media (max-width: 900px) {
-  .settings-page__layout {
-    grid-template-columns: 1fr;
+  .settings-page {
+    &__layout {
+      grid-template-columns: 1fr;
+    }
+
+    &__nav {
+      flex-direction: row;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+    }
+
+    &__nav-item {
+      flex-shrink: 0;
+    }
+
+    &__footer {
+      flex-direction: column-reverse;
+      align-items: stretch;
+
+      ::ng-deep .p-button {
+        width: 100%;
+      }
+    }
   }
 
-  .settings-card__grid {
-    grid-template-columns: 1fr;
+  .settings-card {
+    &__header {
+      flex-direction: column;
+    }
+
+    &__grid {
+      grid-template-columns: 1fr;
+    }
   }
 }

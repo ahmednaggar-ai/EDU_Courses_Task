@@ -1,4 +1,13 @@
 <div class="dashboard-layout">
+  @if (layout.sidebarOpen()) {
+    <button
+      type="button"
+      class="dashboard-layout__overlay"
+      aria-label="Close navigation"
+      (click)="layout.closeSidebar()"
+    ></button>
+  }
+
   <app-sidebar />
   <div class="dashboard-layout__main">
     <app-header />

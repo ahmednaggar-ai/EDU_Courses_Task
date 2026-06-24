@@ -99,3 +99,32 @@
     margin-top: 2rem;
   }
 }
+
+@media (max-width: 768px) {
+  .auth-static-page {
+    &__topbar {
+      padding: 0.875rem 1rem;
+    }
+
+    &__content {
+      padding: 1rem;
+      align-items: flex-start;
+    }
+
+    &__card {
+      padding: 1.5rem;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    &__actions {
+      flex-direction: column;
+
+      ::ng-deep .p-button {
+        width: 100%;
+      }
+    }
+  }
+}

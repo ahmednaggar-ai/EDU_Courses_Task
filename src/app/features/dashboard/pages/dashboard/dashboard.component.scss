@@ -305,4 +305,17 @@
   .dashboard-page__stats {
     grid-template-columns: 1fr;
   }
+
+  .dashboard-page__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dashboard-page__actions {
+    width: 100%;
+
+    ::ng-deep .p-button {
+      flex: 1 1 100%;
+    }
+  }
 }

@@ -2,18 +2,23 @@ import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { selectCurrentUser } from '../../../features/auth/store/auth.selectors';
+import { LayoutService } from '../../../core/services/layout.service';
 import { AuthActions } from '../../../features/auth/store/auth.actions';
+import { selectCurrentUser } from '../../../features/auth/store/auth.selectors';
 import { SidebarNavItem } from './sidebar.interface';
 
 @Component({
   selector: 'app-sidebar',
+  host: {
+    '[class.sidebar--open]': 'layout.sidebarOpen()',
+  },
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent {
   private readonly store = inject(Store);
+  protected readonly layout = inject(LayoutService);
 
   protected readonly navItems: SidebarNavItem[] = [
     { label: 'Dashboard', icon: 'pi pi-th-large', route: '/dashboard' },
@@ -26,7 +31,12 @@ export class SidebarComponent {
     initialValue: null,
   });
 
+  protected closeSidebar(): void {
+    this.layout.closeSidebar();
+  }
+
   protected logout(): void {
+    this.layout.closeSidebar();
     this.store.dispatch(AuthActions.signOut());
   }
 }

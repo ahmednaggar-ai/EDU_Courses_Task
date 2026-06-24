@@ -16,6 +16,7 @@
         [routerLink]="item.route"
         routerLinkActive="sidebar__link--active"
         [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
+        (click)="closeSidebar()"
       >
         <i [class]="item.icon"></i>
         <span>{{ item.label }}</span>

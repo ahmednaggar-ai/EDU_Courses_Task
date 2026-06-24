@@ -57,4 +57,9 @@
   .entity-form__row {
     grid-template-columns: 1fr;
   }
+
+  .entity-form__footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
 }

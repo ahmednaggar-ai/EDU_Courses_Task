@@ -1,4 +1,13 @@
 <header class="header">
+  <button
+    type="button"
+    class="header__menu-btn"
+    aria-label="Open navigation menu"
+    (click)="layout.toggleSidebar()"
+  >
+    <i class="pi pi-bars"></i>
+  </button>
+
   <div class="header__search">
     <p-iconfield>
       <p-inputicon class="pi pi-search" />
