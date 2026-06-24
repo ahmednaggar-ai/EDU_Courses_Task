@@ -80,13 +80,51 @@
     border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
-  &__user {
+  &__footer {
     margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__user {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 1rem 0.5rem 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0 0.5rem;
+  }
+
+  &__user-info {
+    min-width: 0;
+  }
+
+  &__logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--edu-sidebar-text);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+
+    i {
+      font-size: 0.9375rem;
+    }
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.14);
+      border-color: rgba(239, 68, 68, 0.3);
+      color: #fecaca;
+    }
   }
 
   &__user-avatar {

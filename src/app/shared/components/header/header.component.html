@@ -18,15 +18,6 @@
       <i class="pi pi-bell"></i>
     </button>
 
-    <p-button
-      label="Logout"
-      icon="pi pi-sign-out"
-      severity="secondary"
-      [outlined]="true"
-      styleClass="header__logout-btn"
-      (onClick)="logout()"
-    />
-
     <div class="header__divider"></div>
 
     @if (profile(); as user) {

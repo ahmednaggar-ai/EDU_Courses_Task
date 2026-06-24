@@ -3,6 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectCurrentUser } from '../../../features/auth/store/auth.selectors';
+import { AuthActions } from '../../../features/auth/store/auth.actions';
 import { SidebarNavItem } from './sidebar.interface';
 
 @Component({
@@ -24,4 +25,8 @@ export class SidebarComponent {
   protected readonly user = toSignal(this.store.select(selectCurrentUser), {
     initialValue: null,
   });
+
+  protected logout(): void {
+    this.store.dispatch(AuthActions.signOut());
+  }
 }
