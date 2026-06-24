@@ -15,11 +15,15 @@
 
   <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('instructor')">
     <label for="course-instructor">Instructor</label>
-    <input
-      id="course-instructor"
-      pInputText
+    <p-select
+      inputId="course-instructor"
       formControlName="instructor"
-      placeholder="Instructor name"
+      [options]="instructorOptions()"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Select instructor"
+      [filter]="true"
+      filterPlaceholder="Search instructor"
       [class.ng-invalid]="isInvalid('instructor')"
     />
     @if (fieldError('instructor'); as error) {
@@ -64,11 +68,13 @@
   <div class="entity-form__row">
     <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('duration')">
       <label for="course-duration">Duration</label>
-      <input
-        id="course-duration"
-        pInputText
+      <p-select
+        inputId="course-duration"
         formControlName="duration"
-        placeholder="e.g. 12 Weeks"
+        [options]="durationOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Select duration"
         [class.ng-invalid]="isInvalid('duration')"
       />
       @if (fieldError('duration'); as error) {
@@ -78,12 +84,14 @@
 
     <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('price')">
       <label for="course-price">Price</label>
-      <p-inputNumber
-        inputId="course-price"
-        formControlName="price"
-        mode="currency"
-        currency="USD"
-        locale="en-US"
+      <input
+        id="course-price"
+        pInputText
+        type="text"
+        inputmode="numeric"
+        [value]="formatPrice(form.controls.price.value)"
+        placeholder="0 $"
+        (input)="onPriceInput($event)"
         [class.ng-invalid]="isInvalid('price')"
       />
       @if (fieldError('price'); as error) {
@@ -95,13 +103,28 @@
   <div class="entity-form__row">
     <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('icon')">
       <label for="course-icon">Icon Class</label>
-      <input
-        id="course-icon"
-        pInputText
+      <p-select
+        inputId="course-icon"
         formControlName="icon"
-        placeholder="pi pi-code"
+        [options]="iconOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Select icon"
         [class.ng-invalid]="isInvalid('icon')"
-      />
+      >
+        <ng-template let-option pTemplate="item">
+          <div class="course-form__icon-option">
+            <i [class]="option.value"></i>
+            <span>{{ option.label }}</span>
+          </div>
+        </ng-template>
+        <ng-template let-option pTemplate="selectedItem">
+          <div class="course-form__icon-option">
+            <i [class]="option.value"></i>
+            <span>{{ option.label }}</span>
+          </div>
+        </ng-template>
+      </p-select>
       @if (fieldError('icon'); as error) {
         <small class="entity-form__error">{{ error }}</small>
       }
@@ -109,13 +132,19 @@
 
     <div class="entity-form__field" [class.entity-form__field--invalid]="isInvalid('iconColor')">
       <label for="course-icon-color">Icon Color</label>
-      <input
-        id="course-icon-color"
-        pInputText
-        formControlName="iconColor"
-        placeholder="#2563eb"
-        [class.ng-invalid]="isInvalid('iconColor')"
-      />
+      <div class="course-form__color-field">
+        <p-colorPicker
+          inputId="course-icon-color"
+          formControlName="iconColor"
+          format="hex"
+        />
+        <input
+          pInputText
+          formControlName="iconColor"
+          placeholder="#2563eb"
+          [class.ng-invalid]="isInvalid('iconColor')"
+        />
+      </div>
       @if (fieldError('iconColor'); as error) {
         <small class="entity-form__error">{{ error }}</small>
       }

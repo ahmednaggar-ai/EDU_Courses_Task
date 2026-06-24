@@ -1,44 +1,68 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { Button } from 'primeng/button';
+import { ColorPicker } from 'primeng/colorpicker';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
+import { map, take } from 'rxjs/operators';
 import { MockDataService } from '../../../../core/services/mock-data.service';
+import { SelectOption } from '../../../../shared/interfaces/select-option.interface';
 import {
   getControlErrorMessage,
   getFormControl,
   isControlInvalid,
 } from '../../../../shared/utils/form-validation.util';
+import { selectAllInstructors } from '../../../instructors/store/instructors.selectors';
+import { InstructorsActions } from '../../../instructors/store/instructors.actions';
 import { Course, CourseCategory, CourseStatus } from '../../models/course.interface';
 import { CourseFormDialogData, CourseFormDialogResult } from './course-form-dialog.interface';
 
 @Component({
   selector: 'app-course-form-dialog',
-  imports: [ReactiveFormsModule, Button, InputText, InputNumber, Select],
+  imports: [ReactiveFormsModule, Button, InputText, Select, ColorPicker],
   templateUrl: './course-form-dialog.component.html',
   styleUrl: './course-form-dialog.component.scss',
 })
 export class CourseFormDialogComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   private readonly fb = inject(FormBuilder);
+  private readonly store = inject(Store);
   private readonly dialogRef = inject(DynamicDialogRef);
   private readonly dialogConfig = inject(DynamicDialogConfig<CourseFormDialogData>);
   private readonly mockDataService = inject(MockDataService);
 
   protected readonly statusOptions = this.mockDataService.getCourseStatusFormOptions();
   protected readonly categoryOptions = this.mockDataService.getCourseCategoryFormOptions();
+  protected readonly durationOptions = this.mockDataService.getCourseDurationOptions();
+  protected readonly iconOptions = this.mockDataService.getCourseIconOptions();
+  protected readonly instructorOptions = toSignal(
+    this.store.select(selectAllInstructors).pipe(
+      map((instructors) =>
+        instructors.map(
+          (instructor): SelectOption<string> => ({
+            label: instructor.name,
+            value: instructor.name,
+          }),
+        ),
+      ),
+    ),
+    { initialValue: [] as SelectOption<string>[] },
+  );
   protected readonly isEdit = !!this.dialogConfig.data?.course;
 
   protected readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
-    instructor: ['', Validators.required],
+    instructor: [null as string | null, Validators.required],
     category: [null as CourseCategory | null, Validators.required],
-    duration: ['', Validators.required],
-    price: [null as number | null, [Validators.required, Validators.min(0)]],
+    duration: [null as string | null, Validators.required],
+    price: [0, [Validators.required, Validators.min(0)]],
     status: [null as CourseStatus | null, Validators.required],
-    icon: ['', Validators.required],
-    iconColor: ['', Validators.required],
+    icon: [null as string | null, Validators.required],
+    iconColor: ['#2563eb', Validators.required],
   });
 
   ngOnInit(): void {
@@ -46,6 +70,50 @@ export class CourseFormDialogComponent implements OnInit {
 
     if (course) {
       this.form.patchValue(course);
+    }
+
+    this.store
+      .select(selectAllInstructors)
+      .pipe(
+        map((instructors) => instructors.length),
+        take(1),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((count) => {
+        if (!count) {
+          this.store.dispatch(InstructorsActions.load());
+        }
+      });
+
+    this.form.controls.icon.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((icon) => this.applyIconColor(icon));
+  }
+
+  protected formatPrice(value: number | null | undefined): string {
+    return `${value ?? 0} $`;
+  }
+
+  protected onPriceInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const digits = input.value.replace(/[^\d]/g, '');
+    const numeric = digits ? Number(digits) : 0;
+
+    this.form.controls.price.setValue(numeric);
+    this.form.controls.price.markAsTouched();
+    this.form.controls.price.updateValueAndValidity();
+    input.value = this.formatPrice(numeric);
+  }
+
+  private applyIconColor(icon: string | null): void {
+    if (!icon) {
+      return;
+    }
+
+    const selectedIcon = this.iconOptions.find((option) => option.value === icon);
+
+    if (selectedIcon?.previewColor && !this.isEdit) {
+      this.form.controls.iconColor.setValue(selectedIcon.previewColor);
     }
   }
 
@@ -61,12 +129,12 @@ export class CourseFormDialogComponent implements OnInit {
     const course: Course = {
       id: existing?.id ?? this.generateCourseId(),
       name: value.name,
-      instructor: value.instructor,
+      instructor: value.instructor!,
       category: value.category!,
-      duration: value.duration,
-      price: value.price!,
+      duration: value.duration!,
+      price: value.price,
       status: value.status!,
-      icon: value.icon,
+      icon: value.icon!,
       iconColor: value.iconColor,
     };
 
