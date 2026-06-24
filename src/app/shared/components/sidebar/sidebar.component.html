@@ -24,16 +24,18 @@
   </nav>
 
   <div class="sidebar__user">
-    <img
-      class="sidebar__user-avatar"
-      [src]="user.avatarUrl"
-      [alt]="user.name"
-      width="36"
-      height="36"
-    />
-    <div>
-      <div class="sidebar__user-name">{{ user.name }}</div>
-      <div class="sidebar__user-role">{{ user.role }}</div>
-    </div>
+    @if (user(); as profile) {
+      <img
+        class="sidebar__user-avatar"
+        [src]="profile.avatarUrl"
+        [alt]="profile.name"
+        width="36"
+        height="36"
+      />
+      <div>
+        <div class="sidebar__user-name">{{ profile.name }}</div>
+        <div class="sidebar__user-role">{{ profile.roleLabel }}</div>
+      </div>
+    }
   </div>
 </aside>

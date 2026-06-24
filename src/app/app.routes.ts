@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
+import { authGuard, guestGuard } from './core/guards/auth.guard';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'auth/sign-in', pathMatch: 'full' },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   {
     path: 'auth',
     component: AuthLayoutComponent,
@@ -11,11 +12,13 @@ export const routes: Routes = [
       { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
       {
         path: 'sign-in',
+        canActivate: [guestGuard],
         loadComponent: () =>
           import('./features/auth/pages/sign-in/sign-in.component').then((m) => m.SignInComponent),
       },
       {
         path: 'sign-up',
+        canActivate: [guestGuard],
         loadComponent: () =>
           import('./features/auth/pages/sign-up/sign-up.component').then((m) => m.SignUpComponent),
       },
@@ -57,6 +60,8 @@ export const routes: Routes = [
   {
     path: '',
     component: DashboardLayoutComponent,
+    canActivate: [authGuard],
+    canActivateChild: [authGuard],
     children: [
       {
         path: 'dashboard',
@@ -95,5 +100,5 @@ export const routes: Routes = [
       },
     ],
   },
-  { path: '**', redirectTo: 'auth/sign-in' },
+  { path: '**', redirectTo: 'dashboard' },
 ];

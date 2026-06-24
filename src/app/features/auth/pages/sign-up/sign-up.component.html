@@ -37,7 +37,7 @@
         <app-theme-toggle />
       </div>
 
-      <form class="auth-form" (ngSubmit)="$event.preventDefault()">
+      <form class="auth-form" (ngSubmit)="submit()">
         <label class="auth-form__label">FULL NAME</label>
         <p-iconfield>
           <p-inputicon class="pi pi-user" />
@@ -101,7 +101,8 @@
           iconPos="right"
           type="submit"
           styleClass="auth-form__submit"
-          routerLink="/courses"
+          [loading]="loading()"
+          [disabled]="loading()"
         />
 
         <p class="auth-form__footer-text">

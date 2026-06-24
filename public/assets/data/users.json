@@ -1,0 +1,20 @@
+[
+  {
+    "id": "USR-001",
+    "name": "Dr. Julian Reed",
+    "email": "admin@eduflow.edu",
+    "password": "Admin@123456",
+    "role": "it-admin",
+    "roleLabel": "System Administrator",
+    "avatarUrl": "https://i.pravatar.cc/80?img=33"
+  },
+  {
+    "id": "USR-002",
+    "name": "Alex Rivera",
+    "email": "alex.rivera@eduflow.edu",
+    "password": "Rivera@123456",
+    "role": "registrar",
+    "roleLabel": "Registrar",
+    "avatarUrl": "https://i.pravatar.cc/80?img=12"
+  }
+]

@@ -18,21 +18,27 @@
       <i class="pi pi-bell"></i>
     </button>
 
+    <p-button
+      label="Logout"
+      icon="pi pi-sign-out"
+      severity="secondary"
+      [outlined]="true"
+      styleClass="header__logout-btn"
+      (onClick)="logout()"
+    />
+
     <div class="header__divider"></div>
 
-    <div class="header__profile">
-      <div class="header__profile-info">
-        <div class="header__profile-name">{{ profile.name }}</div>
-        <div class="header__profile-role">{{ profile.role }}</div>
+    @if (profile(); as user) {
+      <div class="header__profile">
+        <div class="header__profile-info">
+          <div class="header__profile-name">{{ user.name }}</div>
+          <div class="header__profile-role">{{ user.roleLabel }}</div>
+        </div>
+        <div class="header__avatar">
+          <img [src]="user.avatarUrl" [alt]="user.name" width="40" height="40" />
+        </div>
       </div>
-      <div class="header__avatar">
-        <img
-          [src]="profile.avatarUrl"
-          [alt]="profile.name"
-          width="40"
-          height="40"
-        />
-      </div>
-    </div>
+    }
   </div>
 </header>
