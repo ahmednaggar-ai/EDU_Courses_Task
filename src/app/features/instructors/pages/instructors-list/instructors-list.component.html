@@ -10,7 +10,8 @@
   <div class="instructors-page__toolbar">
     <div class="instructors-page__filters">
       <p-select
-        [(ngModel)]="selectedDepartment"
+        [ngModel]="selectedDepartment()"
+        (ngModelChange)="selectedDepartment.set($event)"
         [options]="departmentOptions"
         optionLabel="label"
         optionValue="value"
@@ -18,7 +19,8 @@
         styleClass="instructors-page__filter"
       />
       <p-select
-        [(ngModel)]="selectedStatus"
+        [ngModel]="selectedStatus()"
+        (ngModelChange)="selectedStatus.set($event)"
         [options]="statusOptions"
         optionLabel="label"
         optionValue="value"
@@ -31,42 +33,5 @@
     </button>
   </div>
 
-  <div class="instructors-page__table-card">
-    <p-table [value]="instructors" [paginator]="true" [rows]="10" styleClass="instructors-table">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>INSTRUCTOR</th>
-          <th>EMAIL</th>
-          <th>DEPARTMENT</th>
-          <th>COURSES</th>
-          <th>STATUS</th>
-          <th></th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-instructor>
-        <tr>
-          <td>
-            <div class="instructor-name">
-              <div class="instructor-name__avatar">{{ instructor.name.charAt(0) }}</div>
-              <div>
-                <div class="instructor-name__title">{{ instructor.name }}</div>
-                <div class="instructor-name__id">ID: {{ instructor.id }}</div>
-              </div>
-            </div>
-          </td>
-          <td>{{ instructor.email }}</td>
-          <td>{{ instructor.department }}</td>
-          <td>{{ instructor.courses }}</td>
-          <td>
-            <p-tag [value]="instructor.status" [severity]="getStatusSeverity(instructor.status)" />
-          </td>
-          <td>
-            <button type="button" class="instructors-page__menu-btn" aria-label="Instructor actions">
-              <i class="pi pi-ellipsis-v"></i>
-            </button>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
+  <app-table />
 </div>

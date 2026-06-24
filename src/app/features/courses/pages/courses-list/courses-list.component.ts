@@ -1,37 +1,45 @@
-import { Component } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { Select } from 'primeng/select';
-import { TableModule } from 'primeng/table';
-import { Tag } from 'primeng/tag';
-import { Course, CourseCategory } from '../../models/course.model';
+import { TableComponent } from '../../../../shared/components/table/table.component';
+import { TableService } from '../../../../shared/components/table/table.service';
+import { Course } from '../../models/course.interface';
+import {
+  CourseCategoryFilterOption,
+  CourseCategorySeverityMap,
+  CourseStat,
+  CourseStatusFilterOption,
+} from './courses-list.interface';
 
 @Component({
   selector: 'app-courses-list',
-  imports: [CurrencyPipe, FormsModule, Button, Select, TableModule, Tag],
+  providers: [TableService],
+  imports: [FormsModule, Button, Select, TableComponent],
   templateUrl: './courses-list.component.html',
   styleUrl: './courses-list.component.scss',
 })
 export class CoursesListComponent {
-  protected selectedStatus: string | null = null;
-  protected selectedCategory: string | null = null;
+  private readonly tableService = inject(TableService<Course>);
 
-  protected readonly statusOptions = [
+  protected readonly selectedStatus = signal<CourseStatusFilterOption['value']>(null);
+  protected readonly selectedCategory = signal<CourseCategoryFilterOption['value']>(null);
+
+  protected readonly statusOptions: CourseStatusFilterOption[] = [
     { label: 'All Status', value: null },
     { label: 'Active', value: 'Active' },
     { label: 'Draft', value: 'Draft' },
     { label: 'Archived', value: 'Archived' },
   ];
 
-  protected readonly categoryOptions = [
+  protected readonly categoryOptions: CourseCategoryFilterOption[] = [
     { label: 'All Categories', value: null },
     { label: 'Frontend', value: 'FRONTEND' },
     { label: 'Design', value: 'DESIGN' },
     { label: 'Backend', value: 'BACKEND' },
   ];
 
-  protected readonly courses: Course[] = [
+  private readonly coursesData: Course[] = [
     {
       id: 'CRS-2024-001',
       name: 'Angular Fundamentals',
@@ -89,7 +97,7 @@ export class CoursesListComponent {
     },
   ];
 
-  protected readonly stats = [
+  protected readonly stats: CourseStat[] = [
     {
       label: 'Total Enrollment',
       value: '12,402',
@@ -119,16 +127,39 @@ export class CoursesListComponent {
     },
   ];
 
-  protected getCategorySeverity(category: CourseCategory): 'info' | 'success' | 'warn' | 'danger' | 'secondary' | 'contrast' {
-    const map: Record<CourseCategory, 'info' | 'success' | 'warn'> = {
-      FRONTEND: 'info',
-      DESIGN: 'success',
-      BACKEND: 'warn',
-    };
-    return map[category];
+  private readonly categorySeverityMap: CourseCategorySeverityMap = {
+    FRONTEND: 'info',
+    DESIGN: 'success',
+    BACKEND: 'warn',
+  };
+
+  constructor() {
+    this.initTable();
   }
 
-  protected getStatusClass(status: Course['status']): string {
-    return `status-dot status-dot--${status.toLowerCase()}`;
+  private initTable(): void {
+    this.tableService.configure({
+      clientSidePagination: true,
+      paginatorEnabled: true,
+      rows: 10,
+      styleClass: 'app-table',
+      columns: [
+        { field: 'name', header: 'COURSE NAME', type: 'course-name' },
+        { field: 'instructor', header: 'INSTRUCTOR', type: 'text' },
+        { field: 'category', header: 'CATEGORY', type: 'tag' },
+        { field: 'duration', header: 'DURATION', type: 'text' },
+        { field: 'price', header: 'PRICE', type: 'currency' },
+        { field: 'status', header: 'STATUS', type: 'status-dot' },
+        { field: 'actions', header: '', type: 'actions' },
+      ],
+    });
+
+    this.tableService.setCellHandlers({
+      tagSeverity: (row) => this.categorySeverityMap[row.category],
+      statusClass: (row) => `status-dot--${row.status.toLowerCase()}`,
+      actionClick: () => undefined,
+    });
+
+    this.tableService.setData(this.coursesData);
   }
 }

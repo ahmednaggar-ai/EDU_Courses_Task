@@ -55,30 +55,9 @@
     }
   }
 
-  &__table-card {
-    background: var(--edu-card-bg);
-    border: 1px solid var(--edu-border);
-    border-radius: 0.75rem;
-    overflow: hidden;
+  app-table {
+    display: block;
     margin-bottom: 1.5rem;
-  }
-
-  &__price {
-    font-weight: 600;
-  }
-
-  &__menu-btn {
-    border: none;
-    background: transparent;
-    color: var(--edu-text-muted);
-    cursor: pointer;
-    padding: 0.25rem;
-    border-radius: 0.25rem;
-
-    &:hover {
-      background: var(--edu-hover-bg);
-      color: var(--edu-text);
-    }
   }
 
   &__stats {
@@ -90,57 +69,6 @@
 
 :host ::ng-deep .courses-page__filter {
   min-width: 10rem;
-}
-
-.course-name {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-
-  &__icon {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 0.5rem;
-    display: grid;
-    place-items: center;
-    flex-shrink: 0;
-  }
-
-  &__title {
-    font-weight: 600;
-    font-size: 0.875rem;
-  }
-
-  &__id {
-    font-size: 0.75rem;
-    color: var(--edu-text-muted);
-    margin-top: 0.125rem;
-  }
-}
-
-.status-cell {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-}
-
-.status-dot {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-
-  &--active {
-    background: #22c55e;
-  }
-
-  &--draft {
-    background: #f59e0b;
-  }
-
-  &--archived {
-    background: #94a3b8;
-  }
 }
 
 .stat-card {
@@ -181,34 +109,6 @@
 
     &--up {
       color: #16a34a;
-    }
-  }
-}
-
-:host ::ng-deep {
-  .courses-table {
-    .p-datatable-thead > tr > th {
-      background: var(--edu-input-bg);
-      color: var(--edu-text-muted);
-      font-size: 0.6875rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      padding: 0.875rem 1rem;
-      border-color: var(--edu-border);
-    }
-
-    .p-datatable-tbody > tr > td {
-      padding: 1rem;
-      border-color: var(--edu-border);
-      font-size: 0.875rem;
-    }
-
-    .p-paginator {
-      border: none;
-      padding: 0.75rem 1rem;
-      justify-content: flex-end;
-      font-size: 0.875rem;
-      color: var(--edu-text-muted);
     }
   }
 }

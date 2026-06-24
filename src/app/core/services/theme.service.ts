@@ -4,8 +4,8 @@ import {
   THEME_DARK_CLASS,
   THEME_LIGHT_CLASS,
   THEME_STORAGE_KEY,
-  ThemeMode,
 } from '../themes/theme.constants';
+import { ThemeMode } from '../interfaces/theme.interface';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {

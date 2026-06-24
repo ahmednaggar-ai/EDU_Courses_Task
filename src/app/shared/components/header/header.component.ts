@@ -4,6 +4,7 @@ import { InputText } from 'primeng/inputtext';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
+import { HeaderUserProfile } from './header.interface';
 
 @Component({
   selector: 'app-header',
@@ -13,4 +14,10 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 })
 export class HeaderComponent {
   protected searchQuery = '';
+
+  protected readonly profile: HeaderUserProfile = {
+    name: 'Alex Rivera',
+    role: 'System Admin',
+    avatarUrl: 'https://i.pravatar.cc/80?img=12',
+  };
 }

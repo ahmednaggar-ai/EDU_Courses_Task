@@ -26,14 +26,14 @@
   <div class="sidebar__user">
     <img
       class="sidebar__user-avatar"
-      src="https://i.pravatar.cc/80?img=33"
-      alt="Dr. Julian Reed"
+      [src]="user.avatarUrl"
+      [alt]="user.name"
       width="36"
       height="36"
     />
     <div>
-      <div class="sidebar__user-name">Dr. Julian Reed</div>
-      <div class="sidebar__user-role">System Administrator</div>
+      <div class="sidebar__user-name">{{ user.name }}</div>
+      <div class="sidebar__user-role">{{ user.role }}</div>
     </div>
   </div>
 </aside>

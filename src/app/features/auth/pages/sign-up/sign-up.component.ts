@@ -9,6 +9,7 @@ import { Select } from 'primeng/select';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { ThemeToggleComponent } from '../../../../shared/components/theme-toggle/theme-toggle.component';
+import { SignUpRoleOption, SignUpRoleValue } from './sign-up.interface';
 
 @Component({
   selector: 'app-sign-up',
@@ -31,10 +32,10 @@ export class SignUpComponent {
   protected fullName = '';
   protected email = '';
   protected password = '';
-  protected role: string | null = null;
+  protected role: SignUpRoleValue | null = null;
   protected agreedToTerms = false;
 
-  protected readonly roles = [
+  protected readonly roles: SignUpRoleOption[] = [
     { label: 'Dean / Academic Director', value: 'dean' },
     { label: 'Department Head', value: 'head' },
     { label: 'Registrar', value: 'registrar' },

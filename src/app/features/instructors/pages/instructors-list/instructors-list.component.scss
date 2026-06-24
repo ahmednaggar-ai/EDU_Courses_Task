@@ -50,86 +50,11 @@
     }
   }
 
-  &__table-card {
-    background: var(--edu-card-bg);
-    border: 1px solid var(--edu-border);
-    border-radius: 0.75rem;
-    overflow: hidden;
-  }
-
-  &__menu-btn {
-    border: none;
-    background: transparent;
-    color: var(--edu-text-muted);
-    cursor: pointer;
-    padding: 0.25rem;
-    border-radius: 0.25rem;
-
-    &:hover {
-      background: var(--edu-hover-bg);
-      color: var(--edu-text);
-    }
+  app-table {
+    display: block;
   }
 }
 
 :host ::ng-deep .instructors-page__filter {
   min-width: 10rem;
-}
-
-.instructor-name {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-
-  &__avatar {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    background: rgba(37, 99, 235, 0.12);
-    color: var(--edu-blue);
-    display: grid;
-    place-items: center;
-    font-weight: 700;
-    font-size: 0.875rem;
-    flex-shrink: 0;
-  }
-
-  &__title {
-    font-weight: 600;
-    font-size: 0.875rem;
-  }
-
-  &__id {
-    font-size: 0.75rem;
-    color: var(--edu-text-muted);
-    margin-top: 0.125rem;
-  }
-}
-
-:host ::ng-deep {
-  .instructors-table {
-    .p-datatable-thead > tr > th {
-      background: var(--edu-input-bg);
-      color: var(--edu-text-muted);
-      font-size: 0.6875rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      padding: 0.875rem 1rem;
-      border-color: var(--edu-border);
-    }
-
-    .p-datatable-tbody > tr > td {
-      padding: 1rem;
-      border-color: var(--edu-border);
-      font-size: 0.875rem;
-    }
-
-    .p-paginator {
-      border: none;
-      padding: 0.75rem 1rem;
-      justify-content: flex-end;
-      font-size: 0.875rem;
-      color: var(--edu-text-muted);
-    }
-  }
 }

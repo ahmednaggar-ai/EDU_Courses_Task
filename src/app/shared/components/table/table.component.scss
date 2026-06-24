@@ -1,0 +1,123 @@
+.app-table-wrapper {
+  background: var(--edu-card-bg);
+  border: 1px solid var(--edu-border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+:host ::ng-deep {
+  .app-table {
+    .p-datatable-thead > tr > th {
+      background: var(--edu-input-bg);
+      color: var(--edu-text-muted);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.875rem 1rem;
+      border-color: var(--edu-border);
+    }
+
+    .p-datatable-tbody > tr > td {
+      padding: 1rem;
+      border-color: var(--edu-border);
+      font-size: 0.875rem;
+    }
+
+    .p-paginator {
+      border: none;
+      padding: 0.75rem 1rem;
+      justify-content: flex-end;
+      font-size: 0.875rem;
+      color: var(--edu-text-muted);
+    }
+  }
+}
+
+.app-table__course-name,
+.app-table__instructor-name {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.app-table__course-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.app-table__course-title,
+.app-table__instructor-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.app-table__course-id,
+.app-table__instructor-id {
+  font-size: 0.75rem;
+  color: var(--edu-text-muted);
+  margin-top: 0.125rem;
+}
+
+.app-table__instructor-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.12);
+  color: var(--edu-blue);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.app-table__status-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.app-table__status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+
+  &.status-dot--active {
+    background: #22c55e;
+  }
+
+  &.status-dot--draft {
+    background: #f59e0b;
+  }
+
+  &.status-dot--archived {
+    background: #94a3b8;
+  }
+
+  &.status-dot--on-leave {
+    background: #f59e0b;
+  }
+}
+
+.app-table__currency {
+  font-weight: 600;
+}
+
+.app-table__action-btn {
+  border: none;
+  background: transparent;
+  color: var(--edu-text-muted);
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+
+  &:hover {
+    background: var(--edu-hover-bg);
+    color: var(--edu-text);
+  }
+}

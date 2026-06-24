@@ -10,7 +10,8 @@
   <div class="courses-page__toolbar">
     <div class="courses-page__filters">
       <p-select
-        [(ngModel)]="selectedStatus"
+        [ngModel]="selectedStatus()"
+        (ngModelChange)="selectedStatus.set($event)"
         [options]="statusOptions"
         optionLabel="label"
         optionValue="value"
@@ -18,7 +19,8 @@
         styleClass="courses-page__filter"
       />
       <p-select
-        [(ngModel)]="selectedCategory"
+        [ngModel]="selectedCategory()"
+        (ngModelChange)="selectedCategory.set($event)"
         [options]="categoryOptions"
         optionLabel="label"
         optionValue="value"
@@ -36,53 +38,7 @@
     </div>
   </div>
 
-  <div class="courses-page__table-card">
-    <p-table [value]="courses" [paginator]="true" [rows]="10" styleClass="courses-table">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>COURSE NAME</th>
-          <th>INSTRUCTOR</th>
-          <th>CATEGORY</th>
-          <th>DURATION</th>
-          <th>PRICE</th>
-          <th>STATUS</th>
-          <th></th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-course>
-        <tr>
-          <td>
-            <div class="course-name">
-              <div class="course-name__icon" [style.background]="course.iconColor + '20'" [style.color]="course.iconColor">
-                <i [class]="course.icon"></i>
-              </div>
-              <div>
-                <div class="course-name__title">{{ course.name }}</div>
-                <div class="course-name__id">ID: {{ course.id }}</div>
-              </div>
-            </div>
-          </td>
-          <td>{{ course.instructor }}</td>
-          <td>
-            <p-tag [value]="course.category" [severity]="getCategorySeverity(course.category)" />
-          </td>
-          <td>{{ course.duration }}</td>
-          <td class="courses-page__price">{{ course.price | currency }}</td>
-          <td>
-            <span class="status-cell">
-              <span [class]="getStatusClass(course.status)"></span>
-              {{ course.status }}
-            </span>
-          </td>
-          <td>
-            <button type="button" class="courses-page__menu-btn" aria-label="Course actions">
-              <i class="pi pi-ellipsis-v"></i>
-            </button>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
+  <app-table />
 
   <div class="courses-page__stats">
     @for (stat of stats; track stat.label) {
@@ -93,10 +49,7 @@
         <div class="stat-card__content">
           <div class="stat-card__label">{{ stat.label }}</div>
           <div class="stat-card__value">{{ stat.value }}</div>
-          <div
-            class="stat-card__trend"
-            [class.stat-card__trend--up]="stat.trendUp === true"
-          >
+          <div class="stat-card__trend" [class.stat-card__trend--up]="stat.trendUp === true">
             {{ stat.trend }}
           </div>
         </div>

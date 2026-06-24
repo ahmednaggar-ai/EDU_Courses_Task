@@ -3,7 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
-import { SettingsTab, SettingsTabItem } from '../../models/settings.model';
+import { SettingsTab, SettingsTabItem } from '../../models/settings.interface';
+import {
+  SettingsDepartmentOption,
+  SettingsLanguageOption,
+  SettingsTimezoneOption,
+} from './settings.interface';
 
 @Component({
   selector: 'app-settings',
@@ -33,20 +38,20 @@ export class SettingsComponent {
   protected language = 'en';
   protected timezone = 'utc-5';
 
-  protected readonly departments = [
+  protected readonly departments: SettingsDepartmentOption[] = [
     { label: 'Academic Affairs', value: 'academic-affairs' },
     { label: 'Student Services', value: 'student-services' },
     { label: 'IT Administration', value: 'it-administration' },
     { label: 'Faculty Relations', value: 'faculty-relations' },
   ];
 
-  protected readonly languages = [
+  protected readonly languages: SettingsLanguageOption[] = [
     { label: 'English (US)', value: 'en' },
     { label: 'French', value: 'fr' },
     { label: 'Spanish', value: 'es' },
   ];
 
-  protected readonly timezones = [
+  protected readonly timezones: SettingsTimezoneOption[] = [
     { label: 'Eastern Time (UTC-5)', value: 'utc-5' },
     { label: 'Central Time (UTC-6)', value: 'utc-6' },
     { label: 'Pacific Time (UTC-8)', value: 'utc-8' },

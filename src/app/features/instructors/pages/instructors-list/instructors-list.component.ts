@@ -1,35 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { Select } from 'primeng/select';
-import { TableModule } from 'primeng/table';
-import { Tag } from 'primeng/tag';
-import { Instructor } from '../../models/instructor.model';
+import { TableComponent } from '../../../../shared/components/table/table.component';
+import { TablePageEvent } from '../../../../shared/components/table/table.interface';
+import { TableService } from '../../../../shared/components/table/table.service';
+import { Instructor } from '../../models/instructor.interface';
+import {
+  InstructorDepartmentFilterOption,
+  InstructorStatusFilterOption,
+} from './instructors-list.interface';
 
 @Component({
   selector: 'app-instructors-list',
-  imports: [FormsModule, Button, Select, TableModule, Tag],
+  providers: [TableService],
+  imports: [FormsModule, Button, Select, TableComponent],
   templateUrl: './instructors-list.component.html',
   styleUrl: './instructors-list.component.scss',
 })
 export class InstructorsListComponent {
-  protected selectedDepartment: string | null = null;
-  protected selectedStatus: string | null = null;
+  private readonly tableService = inject(TableService<Instructor>);
 
-  protected readonly departmentOptions = [
+  protected readonly selectedDepartment = signal<InstructorDepartmentFilterOption['value']>(null);
+  protected readonly selectedStatus = signal<InstructorStatusFilterOption['value']>(null);
+
+  protected readonly departmentOptions: InstructorDepartmentFilterOption[] = [
     { label: 'All Departments', value: null },
     { label: 'Academic Affairs', value: 'Academic Affairs' },
     { label: 'Computer Science', value: 'Computer Science' },
     { label: 'Design', value: 'Design' },
   ];
 
-  protected readonly statusOptions = [
+  protected readonly statusOptions: InstructorStatusFilterOption[] = [
     { label: 'All Status', value: null },
     { label: 'Active', value: 'Active' },
     { label: 'On Leave', value: 'On Leave' },
   ];
 
-  protected readonly instructors: Instructor[] = [
+  private readonly instructorsData: Instructor[] = [
     {
       id: 'INS-001',
       name: 'Dr. Sarah Chen',
@@ -72,7 +80,45 @@ export class InstructorsListComponent {
     },
   ];
 
-  protected getStatusSeverity(status: Instructor['status']): 'success' | 'warn' {
-    return status === 'Active' ? 'success' : 'warn';
+  constructor() {
+    this.initTable();
+  }
+
+  private initTable(): void {
+    this.tableService.configure({
+      clientSidePagination: false,
+      paginatorEnabled: true,
+      rows: 10,
+      totalRecords: this.instructorsData.length,
+      styleClass: 'app-table',
+      columns: [
+        { field: 'name', header: 'INSTRUCTOR', type: 'instructor-name' },
+        { field: 'email', header: 'EMAIL', type: 'text' },
+        { field: 'department', header: 'DEPARTMENT', type: 'text' },
+        { field: 'courses', header: 'COURSES', type: 'text' },
+        { field: 'status', header: 'STATUS', type: 'tag' },
+        { field: 'actions', header: '', type: 'actions' },
+      ],
+    });
+
+    this.tableService.setCellHandlers({
+      tagSeverity: (row) => (row.status === 'Active' ? 'success' : 'warn'),
+      actionClick: () => undefined,
+    });
+
+    this.tableService.setPageChangeHandler((event) => this.loadInstructorsPage(event));
+    this.loadInstructorsPage({ first: 0, rows: 10 });
+  }
+
+  private loadInstructorsPage(event: TablePageEvent): void {
+    this.tableService.setLoading(true);
+
+    const pageData = this.instructorsData.slice(event.first, event.first + event.rows);
+
+    this.tableService.setData(pageData);
+    this.tableService.setTotalRecords(this.instructorsData.length);
+    this.tableService.setFirst(event.first);
+    this.tableService.setRows(event.rows);
+    this.tableService.setLoading(false);
   }
 }

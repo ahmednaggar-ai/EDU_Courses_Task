@@ -22,13 +22,13 @@
 
     <div class="header__profile">
       <div class="header__profile-info">
-        <div class="header__profile-name">Alex Rivera</div>
-        <div class="header__profile-role">System Admin</div>
+        <div class="header__profile-name">{{ profile.name }}</div>
+        <div class="header__profile-role">{{ profile.role }}</div>
       </div>
       <div class="header__avatar">
         <img
-          src="https://i.pravatar.cc/80?img=12"
-          alt="Alex Rivera"
+          [src]="profile.avatarUrl"
+          [alt]="profile.name"
           width="40"
           height="40"
         />
