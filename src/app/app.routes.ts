@@ -59,6 +59,13 @@ export const routes: Routes = [
     component: DashboardLayoutComponent,
     children: [
       {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/dashboard/pages/dashboard/dashboard.component').then(
+            (m) => m.DashboardComponent,
+          ),
+      },
+      {
         path: 'courses',
         loadComponent: () =>
           import('./features/courses/pages/courses-list/courses-list.component').then(
