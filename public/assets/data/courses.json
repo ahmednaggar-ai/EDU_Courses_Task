@@ -1,0 +1,57 @@
+[
+  {
+    "id": "CRS-2024-001",
+    "name": "Angular Fundamentals",
+    "instructor": "Dr. Sarah Chen",
+    "category": "FRONTEND",
+    "duration": "12 Weeks",
+    "price": 499,
+    "status": "Active",
+    "icon": "pi pi-code",
+    "iconColor": "#2563eb"
+  },
+  {
+    "id": "CRS-2024-002",
+    "name": "UI/UX Design Principles",
+    "instructor": "Prof. Michael Ross",
+    "category": "DESIGN",
+    "duration": "8 Weeks",
+    "price": 399,
+    "status": "Active",
+    "icon": "pi pi-palette",
+    "iconColor": "#0ea5e9"
+  },
+  {
+    "id": "CRS-2024-003",
+    "name": "Node.js Backend Dev",
+    "instructor": "Dr. Emily Watson",
+    "category": "BACKEND",
+    "duration": "10 Weeks",
+    "price": 549,
+    "status": "Draft",
+    "icon": "pi pi-server",
+    "iconColor": "#6366f1"
+  },
+  {
+    "id": "CRS-2024-004",
+    "name": "Advanced TypeScript",
+    "instructor": "Dr. Sarah Chen",
+    "category": "FRONTEND",
+    "duration": "6 Weeks",
+    "price": 449,
+    "status": "Active",
+    "icon": "pi pi-code",
+    "iconColor": "#2563eb"
+  },
+  {
+    "id": "CRS-2024-005",
+    "name": "Database Architecture",
+    "instructor": "Prof. James Liu",
+    "category": "BACKEND",
+    "duration": "14 Weeks",
+    "price": 599,
+    "status": "Archived",
+    "icon": "pi pi-database",
+    "iconColor": "#6366f1"
+  }
+]

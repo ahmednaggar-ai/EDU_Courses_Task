@@ -1,7 +1,10 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Store } from '@ngrx/store';
 import { Button } from 'primeng/button';
-import { timer } from 'rxjs';
+import { combineLatest } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { MockDataService } from '../../../../core/services/mock-data.service';
 import { FilterService } from '../../../../shared/components/filters/filter.service';
 import { FiltersComponent } from '../../../../shared/components/filters/filters.component';
 import { FilterValues } from '../../../../shared/components/filters/filters.interface';
@@ -9,6 +12,15 @@ import { TableComponent } from '../../../../shared/components/table/table.compon
 import { TablePageEvent } from '../../../../shared/components/table/table.interface';
 import { TableService } from '../../../../shared/components/table/table.service';
 import { Instructor } from '../../models/instructor.interface';
+import { InstructorsActions } from '../../store/instructors.actions';
+import {
+  selectFilteredInstructorsCount,
+  selectInstructorDepartments,
+  selectInstructorsError,
+  selectInstructorsLoading,
+  selectInstructorsPage,
+  selectInstructorsPagination,
+} from '../../store/instructors.selectors';
 
 @Component({
   selector: 'app-instructors-list',
@@ -19,57 +31,17 @@ import { Instructor } from '../../models/instructor.interface';
 })
 export class InstructorsListComponent {
   private readonly destroyRef = inject(DestroyRef);
+  private readonly store = inject(Store);
+  private readonly mockDataService = inject(MockDataService);
   private readonly tableService = inject(TableService<Instructor>);
   private readonly filterService = inject(FilterService);
-
-  private readonly instructorsData: Instructor[] = [
-    {
-      id: 'INS-001',
-      name: 'Dr. Sarah Chen',
-      email: 's.chen@eduflow.edu',
-      department: 'Computer Science',
-      courses: 4,
-      status: 'Active',
-    },
-    {
-      id: 'INS-002',
-      name: 'Prof. Michael Ross',
-      email: 'm.ross@eduflow.edu',
-      department: 'Design',
-      courses: 3,
-      status: 'Active',
-    },
-    {
-      id: 'INS-003',
-      name: 'Dr. Emily Watson',
-      email: 'e.watson@eduflow.edu',
-      department: 'Computer Science',
-      courses: 5,
-      status: 'Active',
-    },
-    {
-      id: 'INS-004',
-      name: 'Prof. James Liu',
-      email: 'j.liu@eduflow.edu',
-      department: 'Academic Affairs',
-      courses: 2,
-      status: 'On Leave',
-    },
-    {
-      id: 'INS-005',
-      name: 'Dr. Anna Patel',
-      email: 'a.patel@eduflow.edu',
-      department: 'Design',
-      courses: 3,
-      status: 'Active',
-    },
-  ];
-
-  private filteredInstructors: Instructor[] = [...this.instructorsData];
 
   constructor() {
     this.initTable();
     this.initFilters();
+    this.bindStoreToTable();
+    this.bindDepartmentOptions();
+    this.store.dispatch(InstructorsActions.load());
   }
 
   private initTable(): void {
@@ -79,7 +51,6 @@ export class InstructorsListComponent {
       rows: 10,
       skeletonRows: 5,
       emptyMessage: 'No instructors match your filters. Try adjusting your search.',
-      totalRecords: this.filteredInstructors.length,
       styleClass: 'app-table',
       columns: [
         { field: 'name', header: 'INSTRUCTOR', type: 'instructor-name' },
@@ -96,8 +67,7 @@ export class InstructorsListComponent {
       actionClick: () => undefined,
     });
 
-    this.tableService.setPageChangeHandler((event) => this.loadInstructorsPage(event));
-    this.loadInstructorsPage({ first: 0, rows: 10 });
+    this.tableService.setPageChangeHandler((event) => this.onPageChange(event));
   }
 
   private initFilters(): void {
@@ -113,22 +83,13 @@ export class InstructorsListComponent {
           key: 'department',
           type: 'select',
           placeholder: 'All Departments',
-          options: [
-            { label: 'All Departments', value: null },
-            { label: 'Academic Affairs', value: 'Academic Affairs' },
-            { label: 'Computer Science', value: 'Computer Science' },
-            { label: 'Design', value: 'Design' },
-          ],
+          options: [{ label: 'All Departments', value: null }],
         },
         {
           key: 'status',
           type: 'select',
           placeholder: 'All Status',
-          options: [
-            { label: 'All Status', value: null },
-            { label: 'Active', value: 'Active' },
-            { label: 'On Leave', value: 'On Leave' },
-          ],
+          options: this.mockDataService.getInstructorStatuses(),
         },
         {
           key: 'joinedDate',
@@ -141,48 +102,61 @@ export class InstructorsListComponent {
     this.filterService.setFilterHandler((values) => this.applyFilters(values));
   }
 
-  private applyFilters(values: FilterValues): void {
-    const search = String(values['search'] ?? '')
-      .trim()
-      .toLowerCase();
-
-    this.filteredInstructors = this.instructorsData.filter((instructor) => {
-      if (values['department'] && instructor.department !== values['department']) {
-        return false;
-      }
-
-      if (values['status'] && instructor.status !== values['status']) {
-        return false;
-      }
-
-      if (search) {
-        const haystack =
-          `${instructor.name} ${instructor.email} ${instructor.id}`.toLowerCase();
-        if (!haystack.includes(search)) {
-          return false;
+  private bindStoreToTable(): void {
+    combineLatest([
+      this.store.select(selectInstructorsPage),
+      this.store.select(selectFilteredInstructorsCount),
+      this.store.select(selectInstructorsLoading),
+      this.store.select(selectInstructorsError),
+      this.store.select(selectInstructorsPagination),
+    ])
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(([pageData, total, loading, error, pagination]) => {
+        if (error) {
+          this.tableService.setError(error);
+          this.tableService.setLoading(false);
+          return;
         }
-      }
 
-      return true;
-    });
+        this.tableService.clearError();
+        this.tableService.setLoading(loading);
 
-    this.loadInstructorsPage({ first: 0, rows: this.tableService.rows() });
+        if (!loading) {
+          this.tableService.setData(pageData);
+          this.tableService.setTotalRecords(total);
+          this.tableService.setFirst(pagination.first);
+          this.tableService.setRows(pagination.rows);
+        }
+      });
   }
 
-  private loadInstructorsPage(event: TablePageEvent): void {
-    this.tableService.setLoading(true);
-    this.tableService.clearError();
-
-    timer(600)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        const pageData = this.filteredInstructors.slice(event.first, event.first + event.rows);
-
-        this.tableService.setData(pageData);
-        this.tableService.setTotalRecords(this.filteredInstructors.length);
-        this.tableService.setFirst(event.first);
-        this.tableService.setRows(event.rows);
-        this.tableService.setLoading(false);
+  private bindDepartmentOptions(): void {
+    this.store
+      .select(selectInstructorDepartments)
+      .pipe(
+        filter((departments) => departments.length > 0),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((departments) => {
+        this.filterService.updateFieldOptions('department', [
+          { label: 'All Departments', value: null },
+          ...departments.map((department) => ({
+            label: department,
+            value: department,
+          })),
+        ]);
       });
+  }
+
+  private applyFilters(values: FilterValues): void {
+    this.store.dispatch(InstructorsActions.applyFilters({ filters: values }));
+  }
+
+  private onPageChange(event: TablePageEvent): void {
+    this.store.dispatch(
+      InstructorsActions.changePage({
+        pagination: { first: event.first, rows: event.rows },
+      }),
+    );
   }
 }

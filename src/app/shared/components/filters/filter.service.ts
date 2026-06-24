@@ -62,6 +62,13 @@ export class FilterService {
     this.filterHandler = handler;
   }
 
+  updateFieldOptions(key: string, options: FilterFieldConfig['options']): void {
+    const fields = this.fieldsSignal().map((field) =>
+      field.key === key ? { ...field, options } : field,
+    );
+    this.fieldsSignal.set(fields);
+  }
+
   clearFilters(): void {
     this.formGroup.reset(this.defaultValues);
   }
