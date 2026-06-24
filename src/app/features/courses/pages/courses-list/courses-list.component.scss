@@ -38,6 +38,11 @@
     gap: 1rem;
   }
 
+  &__actions {
+    display: flex;
+    gap: 1rem;
+  }
+
   &__action-link {
     display: inline-flex;
     align-items: center;
@@ -49,8 +54,13 @@
     font-weight: 500;
     cursor: pointer;
 
-    &:hover {
+    &:hover,
+    &--active {
       color: var(--edu-blue);
+    }
+
+    &--active {
+      font-weight: 600;
     }
   }
 

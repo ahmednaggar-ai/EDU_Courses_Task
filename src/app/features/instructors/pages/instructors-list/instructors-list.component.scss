@@ -33,7 +33,12 @@
     min-width: 0;
   }
 
-  &__export {
+  &__actions {
+    display: flex;
+    gap: 1rem;
+  }
+
+  &__action-link {
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
@@ -44,8 +49,13 @@
     font-weight: 500;
     cursor: pointer;
 
-    &:hover {
+    &:hover,
+    &--active {
       color: var(--edu-blue);
+    }
+
+    &--active {
+      font-weight: 600;
     }
   }
 

@@ -10,7 +10,12 @@
   <div class="courses-page__toolbar">
     <app-filters />
     <div class="courses-page__actions">
-      <button type="button" class="courses-page__action-link">
+      <button
+        type="button"
+        class="courses-page__action-link"
+        [class.courses-page__action-link--active]="hasAdvancedFilters()"
+        (click)="openAdvancedFilters()"
+      >
         <i class="pi pi-filter"></i> More Filters
       </button>
       <button type="button" class="courses-page__action-link">

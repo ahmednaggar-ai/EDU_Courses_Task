@@ -1,5 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FilterValues } from '../../../shared/components/filters/filters.interface';
+import { applyAdvancedFilters } from '../../../shared/utils/advanced-filter.util';
+import { sortItems } from '../../../shared/utils/sort.util';
 import { Course } from '../models/course.interface';
 import { CoursesState } from './courses.state';
 
@@ -13,6 +15,16 @@ export const selectAllCourses = createSelector(
 export const selectCoursesFilters = createSelector(
   selectCoursesState,
   (state) => state.filters,
+);
+
+export const selectCoursesAdvancedFilters = createSelector(
+  selectCoursesState,
+  (state) => state.advancedFilters,
+);
+
+export const selectCoursesSort = createSelector(
+  selectCoursesState,
+  (state) => state.sort,
 );
 
 export const selectCoursesLoading = createSelector(
@@ -53,5 +65,13 @@ function filterCourses(courses: Course[], values: FilterValues): Course[] {
 export const selectFilteredCourses = createSelector(
   selectAllCourses,
   selectCoursesFilters,
-  (courses, filters) => filterCourses(courses, filters),
+  selectCoursesAdvancedFilters,
+  (courses, filters, advancedFilters) =>
+    applyAdvancedFilters(filterCourses(courses, filters), advancedFilters),
+);
+
+export const selectSortedFilteredCourses = createSelector(
+  selectFilteredCourses,
+  selectCoursesSort,
+  (courses, sort) => sortItems(courses, sort),
 );

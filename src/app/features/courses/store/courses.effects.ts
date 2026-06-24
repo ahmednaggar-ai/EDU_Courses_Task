@@ -29,7 +29,7 @@ export class CoursesEffects {
 
   applyFilters$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(CoursesActions.applyFilters),
+      ofType(CoursesActions.applyFilters, CoursesActions.applyAdvancedFilters),
       switchMap(() =>
         timer(800).pipe(map(() => CoursesActions.applyFiltersComplete())),
       ),

@@ -52,6 +52,10 @@ export class TableComponent {
     this.actionMenu().toggle(event);
   }
 
+  protected isSortable(column: TableColumn): boolean {
+    return column.sortable === true && this.cellType(column) !== 'actions';
+  }
+
   protected skeletonHeight(column: TableColumn): string {
     const type = column.type ?? 'text';
 

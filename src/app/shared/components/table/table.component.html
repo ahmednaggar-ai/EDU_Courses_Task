@@ -13,14 +13,25 @@
       [first]="tableService.first()"
       [totalRecords]="tableService.totalRecords()"
       [lazy]="tableService.lazy()"
+      [customSort]="true"
+      [sortField]="tableService.sortField()"
+      [sortOrder]="tableService.sortOrder() ?? 0"
       [styleClass]="tableService.styleClass()"
       (onPage)="tableService.handlePageChange($event)"
       (onLazyLoad)="tableService.handleLazyLoad($event)"
+      (onSort)="tableService.handleSort($event)"
     >
       <ng-template pTemplate="header">
         <tr>
           @for (column of tableService.columns(); track column.field) {
-            <th>{{ column.header }}</th>
+            @if (isSortable(column)) {
+              <th [pSortableColumn]="column.field">
+                {{ column.header }}
+                <p-sortIcon [field]="column.field" />
+              </th>
+            } @else {
+              <th>{{ column.header }}</th>
+            }
           }
         </tr>
       </ng-template>

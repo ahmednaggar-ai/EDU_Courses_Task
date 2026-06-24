@@ -29,7 +29,7 @@ export class InstructorsEffects {
 
   applyFilters$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(InstructorsActions.applyFilters),
+      ofType(InstructorsActions.applyFilters, InstructorsActions.applyAdvancedFilters),
       switchMap(() =>
         timer(600).pipe(map(() => InstructorsActions.requestComplete())),
       ),
@@ -38,7 +38,7 @@ export class InstructorsEffects {
 
   changePage$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(InstructorsActions.changePage),
+      ofType(InstructorsActions.changePage, InstructorsActions.changeSort),
       switchMap(() =>
         timer(600).pipe(map(() => InstructorsActions.requestComplete())),
       ),

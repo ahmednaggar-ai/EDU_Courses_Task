@@ -1,5 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FilterValues } from '../../../shared/components/filters/filters.interface';
+import { applyAdvancedFilters } from '../../../shared/utils/advanced-filter.util';
+import { sortItems } from '../../../shared/utils/sort.util';
 import { selectAllCourses } from '../../courses/store/courses.selectors';
 import { Instructor, InstructorTableRow } from '../models/instructor.interface';
 import { InstructorsState } from './instructors.state';
@@ -14,6 +16,16 @@ export const selectAllInstructors = createSelector(
 export const selectInstructorsFilters = createSelector(
   selectInstructorsState,
   (state) => state.filters,
+);
+
+export const selectInstructorsAdvancedFilters = createSelector(
+  selectInstructorsState,
+  (state) => state.advancedFilters,
+);
+
+export const selectInstructorsSort = createSelector(
+  selectInstructorsState,
+  (state) => state.sort,
 );
 
 export const selectInstructorsPagination = createSelector(
@@ -67,7 +79,9 @@ function withCourseCounts(instructors: Instructor[], courses: { instructor: stri
 export const selectFilteredInstructors = createSelector(
   selectAllInstructors,
   selectInstructorsFilters,
-  (instructors, filters) => filterInstructors(instructors, filters),
+  selectInstructorsAdvancedFilters,
+  (instructors, filters, advancedFilters) =>
+    applyAdvancedFilters(filterInstructors(instructors, filters), advancedFilters),
 );
 
 export const selectFilteredInstructorsWithCourseCount = createSelector(
@@ -76,13 +90,19 @@ export const selectFilteredInstructorsWithCourseCount = createSelector(
   (instructors, courses) => withCourseCounts(instructors, courses),
 );
 
+export const selectSortedFilteredInstructorsWithCourseCount = createSelector(
+  selectFilteredInstructorsWithCourseCount,
+  selectInstructorsSort,
+  (instructors, sort) => sortItems(instructors, sort),
+);
+
 export const selectFilteredInstructorsCount = createSelector(
-  selectFilteredInstructors,
+  selectSortedFilteredInstructorsWithCourseCount,
   (instructors) => instructors.length,
 );
 
 export const selectInstructorsPage = createSelector(
-  selectFilteredInstructorsWithCourseCount,
+  selectSortedFilteredInstructorsWithCourseCount,
   selectInstructorsPagination,
   (instructors, { first, rows }) => instructors.slice(first, first + rows),
 );

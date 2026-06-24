@@ -6,6 +6,8 @@ import {
   TablePageChangeHandler,
   TablePageEvent,
   TableRowAction,
+  TableSortChangeHandler,
+  TableSortEvent,
 } from './table.interface';
 
 @Injectable()
@@ -17,6 +19,9 @@ export class TableService<T = unknown> {
   private readonly emptyMessageSignal = signal('No records found.');
   private readonly skeletonRowsSignal = signal(5);
   private readonly clientSidePaginationSignal = signal(true);
+  private readonly clientSideSortSignal = signal(true);
+  private readonly sortFieldSignal = signal<string | undefined>(undefined);
+  private readonly sortOrderSignal = signal<1 | -1 | 0 | undefined>(undefined);
   private readonly paginatorEnabledSignal = signal(true);
   private readonly rowsSignal = signal(10);
   private readonly firstSignal = signal(0);
@@ -26,6 +31,7 @@ export class TableService<T = unknown> {
   private readonly rowActionsSignal = signal<TableRowAction<T>[]>([]);
 
   private pageChangeHandler: TablePageChangeHandler | null = null;
+  private sortChangeHandler: TableSortChangeHandler | null = null;
 
   readonly data = this.dataSignal.asReadonly();
   readonly columns = this.columnsSignal.asReadonly();
@@ -34,6 +40,9 @@ export class TableService<T = unknown> {
   readonly emptyMessage = this.emptyMessageSignal.asReadonly();
   readonly skeletonRows = this.skeletonRowsSignal.asReadonly();
   readonly clientSidePagination = this.clientSidePaginationSignal.asReadonly();
+  readonly clientSideSort = this.clientSideSortSignal.asReadonly();
+  readonly sortField = this.sortFieldSignal.asReadonly();
+  readonly sortOrder = this.sortOrderSignal.asReadonly();
   readonly paginatorEnabled = this.paginatorEnabledSignal.asReadonly();
   readonly rows = this.rowsSignal.asReadonly();
   readonly first = this.firstSignal.asReadonly();
@@ -60,6 +69,9 @@ export class TableService<T = unknown> {
   configure(config: TableConfig): void {
     if (config.clientSidePagination !== undefined) {
       this.clientSidePaginationSignal.set(config.clientSidePagination);
+    }
+    if (config.clientSideSort !== undefined) {
+      this.clientSideSortSignal.set(config.clientSideSort);
     }
     if (config.paginatorEnabled !== undefined) {
       this.paginatorEnabledSignal.set(config.paginatorEnabled);
@@ -147,6 +159,21 @@ export class TableService<T = unknown> {
 
   setPageChangeHandler(handler: TablePageChangeHandler | null): void {
     this.pageChangeHandler = handler;
+  }
+
+  setSortChangeHandler(handler: TableSortChangeHandler | null): void {
+    this.sortChangeHandler = handler;
+  }
+
+  setSort(field: string | undefined, order: 1 | -1 | 0 | undefined): void {
+    this.sortFieldSignal.set(field);
+    this.sortOrderSignal.set(order);
+  }
+
+  handleSort(event: TableSortEvent): void {
+    this.sortFieldSignal.set(event.field);
+    this.sortOrderSignal.set(event.order);
+    this.sortChangeHandler?.(event);
   }
 
   handlePageChange(event: TablePageEvent): void {

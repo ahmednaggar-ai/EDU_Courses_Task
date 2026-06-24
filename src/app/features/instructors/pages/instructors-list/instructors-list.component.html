@@ -9,9 +9,19 @@
 
   <div class="instructors-page__toolbar">
     <app-filters />
-    <button type="button" class="instructors-page__export">
-      <i class="pi pi-upload"></i> Export
-    </button>
+    <div class="instructors-page__actions">
+      <button
+        type="button"
+        class="instructors-page__action-link"
+        [class.instructors-page__action-link--active]="hasAdvancedFilters()"
+        (click)="openAdvancedFilters()"
+      >
+        <i class="pi pi-filter"></i> More Filters
+      </button>
+      <button type="button" class="instructors-page__action-link">
+        <i class="pi pi-upload"></i> Export
+      </button>
+    </div>
   </div>
 
   <app-table />

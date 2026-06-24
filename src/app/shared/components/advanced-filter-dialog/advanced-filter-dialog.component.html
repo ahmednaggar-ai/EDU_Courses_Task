@@ -1,0 +1,70 @@
+<form class="advanced-filter" [formGroup]="form" (ngSubmit)="apply()">
+  <div class="advanced-filter__logic">
+    <label for="advanced-filter-logic">Filter logic</label>
+    <p-select
+      inputId="advanced-filter-logic"
+      formControlName="logic"
+      [options]="logicOptions"
+      optionLabel="label"
+      optionValue="value"
+    />
+  </div>
+
+  <div class="advanced-filter__rules" formArrayName="rules">
+    @for (rule of rules.controls; track $index; let index = $index) {
+      <div class="advanced-filter__rule" [formGroupName]="index">
+        <p-select
+          formControlName="field"
+          [options]="fieldOptions()"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Field"
+        />
+
+        <p-select
+          formControlName="operator"
+          [options]="operatorsForField($any(rule).value.field)"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Operator"
+        />
+
+        @if (fieldConfig($any(rule).value.field)?.type === 'select') {
+          <p-select
+            formControlName="value"
+            [options]="fieldConfig($any(rule).value.field)?.options ?? []"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Value"
+          />
+        } @else if (fieldConfig($any(rule).value.field)?.type === 'number') {
+          <p-inputNumber formControlName="value" placeholder="Value" />
+        } @else {
+          <input pInputText formControlName="value" placeholder="Value" />
+        }
+
+        <button
+          type="button"
+          class="advanced-filter__remove"
+          aria-label="Remove rule"
+          (click)="removeRule(index)"
+        >
+          <i class="pi pi-trash"></i>
+        </button>
+      </div>
+    }
+  </div>
+
+  <button type="button" class="advanced-filter__add" (click)="addRule()">
+    <i class="pi pi-plus"></i>
+    Add rule
+  </button>
+
+  <div class="advanced-filter__footer">
+    <p-button label="Clear" severity="secondary" [outlined]="true" type="button" (onClick)="clear()" />
+    <div class="advanced-filter__footer-actions">
+      <p-button label="Cancel" severity="secondary" [outlined]="true" type="button" (onClick)="cancel()" />
+      <p-button label="Apply Filters" type="submit" />
+    </div>
+  </div>
+</form>

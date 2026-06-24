@@ -1,29 +1,37 @@
 import { Component, DestroyRef, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { Button } from 'primeng/button';
 import { combineLatest } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 import { MockDataService } from '../../../../core/services/mock-data.service';
+import { AdvancedFilterDialogComponent } from '../../../../shared/components/advanced-filter-dialog/advanced-filter-dialog.component';
+import {
+  AdvancedFilterDialogResult,
+  AdvancedFilterFieldConfig,
+} from '../../../../shared/interfaces/advanced-filter.interface';
 import { InstructorFormDialogComponent } from '../../components/instructor-form-dialog/instructor-form-dialog.component';
 import { InstructorFormDialogResult } from '../../components/instructor-form-dialog/instructor-form-dialog.interface';
 import { FilterService } from '../../../../shared/components/filters/filter.service';
 import { FiltersComponent } from '../../../../shared/components/filters/filters.component';
 import { FilterValues } from '../../../../shared/components/filters/filters.interface';
 import { TableComponent } from '../../../../shared/components/table/table.component';
-import { TablePageEvent } from '../../../../shared/components/table/table.interface';
+import { TablePageEvent, TableSortEvent } from '../../../../shared/components/table/table.interface';
 import { TableService } from '../../../../shared/components/table/table.service';
 import { AppDialogService } from '../../../../shared/services/app-dialog.service';
+import { hasActiveAdvancedFilters } from '../../../../shared/utils/advanced-filter.util';
 import { CoursesActions } from '../../../courses/store/courses.actions';
 import { Instructor, InstructorTableRow } from '../../models/instructor.interface';
 import { InstructorsActions } from '../../store/instructors.actions';
 import {
   selectFilteredInstructorsCount,
   selectInstructorDepartments,
+  selectInstructorsAdvancedFilters,
   selectInstructorsError,
   selectInstructorsLoading,
   selectInstructorsPage,
   selectInstructorsPagination,
+  selectInstructorsSort,
 } from '../../store/instructors.selectors';
 
 @Component({
@@ -41,6 +49,31 @@ export class InstructorsListComponent {
   private readonly tableService = inject(TableService<InstructorTableRow>);
   private readonly filterService = inject(FilterService);
 
+  protected readonly hasAdvancedFilters = toSignal(
+    this.store
+      .select(selectInstructorsAdvancedFilters)
+      .pipe(map((filters) => hasActiveAdvancedFilters(filters))),
+    { initialValue: false },
+  );
+
+  protected readonly advancedFilterFields: AdvancedFilterFieldConfig[] = [
+    { key: 'name', label: 'Instructor Name', type: 'text' },
+    { key: 'email', label: 'Email', type: 'text' },
+    {
+      key: 'department',
+      label: 'Department',
+      type: 'select',
+      options: this.mockDataService.getInstructorDepartmentOptions(),
+    },
+    {
+      key: 'status',
+      label: 'Status',
+      type: 'select',
+      options: this.mockDataService.getInstructorStatusFormOptions(),
+    },
+    { key: 'courses', label: 'Courses Count', type: 'number' },
+  ];
+
   constructor() {
     this.initTable();
     this.initFilters();
@@ -54,19 +87,49 @@ export class InstructorsListComponent {
     this.openInstructorFormDialog();
   }
 
+  protected openAdvancedFilters(): void {
+    this.store
+      .select(selectInstructorsAdvancedFilters)
+      .pipe(take(1), takeUntilDestroyed(this.destroyRef))
+      .subscribe((currentFilters) => {
+        const ref = this.appDialog.open(AdvancedFilterDialogComponent, {
+          header: 'Advanced Instructor Filters',
+          width: '42rem',
+          styleClass: 'app-dialog',
+          data: {
+            fields: this.advancedFilterFields,
+            filters: currentFilters,
+          },
+        });
+
+        ref?.onClose
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe((result: AdvancedFilterDialogResult | undefined) => {
+            if (result === undefined) {
+              return;
+            }
+
+            this.store.dispatch(
+              InstructorsActions.applyAdvancedFilters({ advancedFilters: result.filters }),
+            );
+          });
+      });
+  }
+
   private initTable(): void {
     this.tableService.configure({
       clientSidePagination: false,
+      clientSideSort: false,
       paginatorEnabled: true,
       rows: 10,
       skeletonRows: 5,
       emptyMessage: 'No instructors match your filters. Try adjusting your search.',
       styleClass: 'app-table',
       columns: [
-        { field: 'name', header: 'INSTRUCTOR', type: 'instructor-name' },
-        { field: 'email', header: 'EMAIL', type: 'text' },
-        { field: 'department', header: 'DEPARTMENT', type: 'text' },
-        { field: 'courses', header: 'COURSES', type: 'text' },
+        { field: 'name', header: 'INSTRUCTOR', type: 'instructor-name', sortable: true },
+        { field: 'email', header: 'EMAIL', type: 'text', sortable: true },
+        { field: 'department', header: 'DEPARTMENT', type: 'text', sortable: true },
+        { field: 'courses', header: 'COURSES', type: 'text', sortable: true },
         { field: 'status', header: 'STATUS', type: 'tag' },
         { field: 'actions', header: '', type: 'actions' },
       ],
@@ -91,6 +154,21 @@ export class InstructorsListComponent {
     ]);
 
     this.tableService.setPageChangeHandler((event) => this.onPageChange(event));
+    this.tableService.setSortChangeHandler((event) => this.onSort(event));
+  }
+
+  private onSort(event: TableSortEvent): void {
+    if (!event.order) {
+      this.store.dispatch(InstructorsActions.changeSort({ sort: null, event }));
+      return;
+    }
+
+    this.store.dispatch(
+      InstructorsActions.changeSort({
+        sort: { field: event.field, order: event.order },
+        event,
+      }),
+    );
   }
 
   private openInstructorFormDialog(instructor?: Instructor): void {
@@ -174,9 +252,10 @@ export class InstructorsListComponent {
       this.store.select(selectInstructorsLoading),
       this.store.select(selectInstructorsError),
       this.store.select(selectInstructorsPagination),
+      this.store.select(selectInstructorsSort),
     ])
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(([pageData, total, loading, error, pagination]) => {
+      .subscribe(([pageData, total, loading, error, pagination, sort]) => {
         if (error) {
           this.tableService.setError(error);
           this.tableService.setLoading(false);
@@ -185,6 +264,12 @@ export class InstructorsListComponent {
 
         this.tableService.clearError();
         this.tableService.setLoading(loading);
+
+        if (sort) {
+          this.tableService.setSort(sort.field, sort.order);
+        } else {
+          this.tableService.setSort(undefined, undefined);
+        }
 
         if (!loading) {
           this.tableService.setData(pageData);

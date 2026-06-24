@@ -27,9 +27,23 @@ export const instructorsReducer = createReducer(
     loading: true,
     error: null,
   })),
+  on(InstructorsActions.applyAdvancedFilters, (state, { advancedFilters }) => ({
+    ...state,
+    advancedFilters,
+    pagination: { ...state.pagination, first: 0 },
+    loading: true,
+    error: null,
+  })),
   on(InstructorsActions.changePage, (state, { pagination }) => ({
     ...state,
     pagination,
+    loading: true,
+    error: null,
+  })),
+  on(InstructorsActions.changeSort, (state, { sort }) => ({
+    ...state,
+    sort,
+    pagination: { ...state.pagination, first: 0 },
     loading: true,
     error: null,
   })),

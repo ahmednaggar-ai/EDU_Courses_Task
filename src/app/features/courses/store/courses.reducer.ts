@@ -30,6 +30,16 @@ export const coursesReducer = createReducer(
     ...state,
     loading: false,
   })),
+  on(CoursesActions.applyAdvancedFilters, (state, { advancedFilters }) => ({
+    ...state,
+    advancedFilters,
+    loading: true,
+    error: null,
+  })),
+  on(CoursesActions.changeSort, (state, { sort }) => ({
+    ...state,
+    sort,
+  })),
   on(CoursesActions.addCourse, (state, { course }) => ({
     ...state,
     courses: [...state.courses, course],

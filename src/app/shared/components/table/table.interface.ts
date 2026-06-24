@@ -11,6 +11,18 @@ export interface TableColumn {
   field: string;
   header: string;
   type?: TableCellType;
+  /** When omitted or false, the column is not sortable. Set to true to enable sorting. */
+  sortable?: boolean;
+}
+
+export interface TableSort {
+  field: string;
+  order: 1 | -1;
+}
+
+export interface TableSortEvent {
+  field: string;
+  order: 1 | -1 | 0;
 }
 
 export interface TablePageEvent {
@@ -22,6 +34,7 @@ export interface TablePageEvent {
 
 export interface TableConfig {
   clientSidePagination?: boolean;
+  clientSideSort?: boolean;
   paginatorEnabled?: boolean;
   rows?: number;
   totalRecords?: number;
@@ -33,6 +46,7 @@ export interface TableConfig {
 }
 
 export type TablePageChangeHandler = (event: TablePageEvent) => void;
+export type TableSortChangeHandler = (event: TableSortEvent) => void;
 
 export interface TableRowAction<T = unknown> {
   label: string;
