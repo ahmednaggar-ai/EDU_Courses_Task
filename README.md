@@ -1,5 +1,15 @@
 # EduFlow Admin
 
+## Submission Information
+
+| Field | Details |
+|-------|---------|
+| **Candidate Name** | Ahmed Hossam Alnaggar |
+| **Task Name** | EDU Course Task |
+| **GitHub Repository Link** | [https://github.com/ahmednaggar-ai/EDU_Courses_Task](https://github.com/ahmednaggar-ai/EDU_Courses_Task) |
+| **Live Demo Link** | [https://edu-courses-task-sepia.vercel.app/auth/sign-in](https://edu-courses-task-sepia.vercel.app/auth/sign-in) |
+| **Note** | — |
+
 A modern educational administration dashboard for managing courses, instructors, and institutional data. Built with Angular and NgRx, it demonstrates reusable UI patterns (table, filters, dialogs, toasts), client-side and server-side data handling, and a complete authentication flow with route guards.
 
 ## Short Description
@@ -134,10 +144,7 @@ Encryption uses a lightweight XOR + Base64 scheme in `auth-crypto.util.ts` (demo
 - **`node_modules` is excluded** via `.gitignore` — run `npm install` after cloning.
 - **Full source code** is under `src/` and `public/`.
 - **Screenshots** (optional): add to a `docs/screenshots/` folder and link here if desired.
-- **Live demo** (optional): deploy `dist/EDU_Courses_Task` to GitHub Pages, Netlify, or Vercel and add the URL below.
-
-<!-- Optional: Live Demo -->
-<!-- **Live Demo:** https://your-demo-url.example.com -->
+- **Live demo:** [https://edu-courses-task-sepia.vercel.app/auth/sign-in](https://edu-courses-task-sepia.vercel.app/auth/sign-in)
 
 ## Project Structure (Overview)
 
